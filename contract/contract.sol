@@ -30,4 +30,26 @@ contract etharticleblockchain {
         boolean     is_evaluated;
     }
 
+    address[5] public owners = [
+
+    ]
+
+    event   journalist_added
+    event   journalist_deactivated
+    event   article_made
+    event   article_evaluated
+    event   article_voted
+    event   article_deployed
+    event   article_failed
+    event   article_fetched
+
+    //Functions
+    function addjournalist_to_pool
+    function deactivate_journalist
+    function make_article
+    function evaluate_article
+    function vote_article
+    function deploy_article
+    function fail_article
+    function fetch_article
 }
