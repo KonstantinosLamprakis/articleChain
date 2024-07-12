@@ -13,12 +13,12 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document
-    .getElementById("submit-form")
+    .getElementById("submit-article")
     .addEventListener("submit", function (e) {
       e.preventDefault();
       var content = quill.root.innerHTML;
       document.getElementById("content").value = content;
-      this.submit(); // Submit the form
+      this.submit();
     });
 });
 
