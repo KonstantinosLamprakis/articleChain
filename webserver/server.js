@@ -32,10 +32,18 @@ app.post('/submit-form', upload.single('image'), (req, res) => {
     const shortText = req.body.short_text;
     const content = req.body.content;
     const image = req.file; // Uploaded file details
+    const humanCheckAnswer = req.body.humanCheckAnswer;
+    const humanCheck = req.body.humanCheck;
   
     // You can now process this data as per your application's requirements
-    console.log('Form data:', { headline, shortText, content, image });
+    console.log('Form data:', { headline, shortText, content, image, humanCheckAnswer, humanCheck });
   
+    if (parseInt(humanCheck) !== parseInt(humanCheckAnswer)) {
+      // res.render('layout', { content: 'failed_submit', message: 'You need to verify that you are a human by doing the math. Try again.' });
+      console.log('wrong');
+      return ;
+  }
+
     // Respond to the client as needed
     res.send('Form submitted successfully!');
   });

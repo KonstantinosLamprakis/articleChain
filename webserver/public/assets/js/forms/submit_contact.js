@@ -1,3 +1,5 @@
+import { generateHumanCheck } from "./humancheck.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   var quill = new Quill("#editor", {
     theme: "snow",
@@ -19,3 +21,5 @@ document.addEventListener("DOMContentLoaded", function () {
       this.submit(); // Submit the form
     });
 });
+
+generateHumanCheck();
