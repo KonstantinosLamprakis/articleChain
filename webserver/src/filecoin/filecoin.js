@@ -5,50 +5,62 @@ const { format } = require('date-fns');
 const { uploadFile } = require('./upload');
 require('dotenv').config();
 
-function configureMulter() {
-	const formattedDate = format(new Date(), 'dd-MM-yyyy_hh-mm-ss');
-	const storage = multer.diskStorage({
-		destination: (req, file, cb) => {
-			cb(null, 'uploads/');
-		},
-		filename: (req, file, cb) => {
-			cb(null, formattedDate + path.extname(file.originalname));
-		}
-	});
-
-	const fileFilter = (req, file, cb) => {
-		const allowedTypes = /jpeg|jpg|png|gif/;
-		const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-		const mimetype = allowedTypes.test(file.mimetype);
-
-		if (extname && mimetype) {
-			cb(null, true);
-		} else {
-			cb(new Error('Only images are allowed!'), false);
-		}
-	};
-
-	return multer({ storage, fileFilter });
-}
 
 const deleteFile = (filePath) => {
-	// Use path.resolve() to get an absolute path (optional)
 	const absolutePath = path.resolve(filePath);
 
-	// Use fs.unlink() to delete the file
 	fs.unlink(absolutePath, (err) => {
 		if (err) {
 			console.error('Error deleting file:', err);
 			return;
 		}
-		console.log('File deleted successfully');
 	});
 };
 
 module.exports = (app) => {
-    const upload = configureMulter();
 
-	app.post('/submit-article', upload.fields([{ name: 'image', maxCount: 1 }]), async (req, res) => {
-		
-	});
+    const storage = multer.memoryStorage();
+    const upload = multer({ storage: storage });
+
+    app.post('/submit', upload.single('image'), (req, res) => {
+        const { title, shortDescription, content, humanCheck, humanCheckAnswer } = req.body;
+        const image = req.file;
+    
+        if (humanCheck !== humanCheckAnswer) {
+            return res.status(400).send('Human verification failed.');
+        }
+    
+        const sanitizeTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+    
+        const date = new Date().toISOString().slice(0, 10);
+    
+        const filename = `${sanitizeTitle}_${date}.json`;
+        const formData = {
+            title,
+            image: {
+                originalname: image.originalname,
+                mimetype: image.mimetype,
+                size: image.size,
+                buffer: image.buffer.toString('base64')
+            },
+            shortDescription,
+            content
+        };
+    
+        const jsonContent = JSON.stringify(formData, null, 2);
+
+
+        fs.writeFile(filename, jsonContent, (err) => {
+            if (err) {
+                console.error('Error writing JSON file:', err);
+                return res.status(500).send('Internal server error');
+            }
+            console.log('JSON file has been saved.');
+            res.send('Form submitted successfully!');
+        });
+
+        deleteFile(filename);
+    
+        res.send('Form submitted successfully!');
+    });
 };

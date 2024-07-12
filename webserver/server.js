@@ -1,24 +1,24 @@
-
-const setupRoutes = require('./src/routes/routes');
 const express = require('express');
 const path = require('path');
-require('dotenv').config();
+const bodyParser = require('body-parser');
+const setupRoutes = require('./src/routes/routes');
 
-const port = process.env.PORT || 3000;
 const app = express();
 
-function configureApp(app) {
-	app.set('view engine', 'ejs');
-	app.set('views', path.join(__dirname, 'views'));
-}
+// Set up view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-function init() {
-	setupRoutes(app);
-	configureApp(app);
+// Middleware to parse form data
+app.use(bodyParser.urlencoded({ extended: true }));
 
-	app.listen(port, () => {
-		console.log(`Server running at http://localhost:${port}/`);
-	});
-}
+// Set up static files serving
+app.use(express.static(path.join(__dirname, 'public')));
 
-init();
+setupRoutes();
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

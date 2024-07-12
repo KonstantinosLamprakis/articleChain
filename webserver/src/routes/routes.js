@@ -2,7 +2,7 @@
 function setupRoutes(app) {
 
 	app.get('/', (req, res) => {
-		res.render('index');
+		res.render('/index');
 	});
 
 	require('../filecoin/filecoin')(app);
