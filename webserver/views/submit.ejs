@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Contact - Brand</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700&amp;display=swap">
-    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
-    <link rel="stylesheet" href="assets/css/pikaday.min.css">
+    <link rel="stylesheet" href="fonts/ionicons.min.css">
+    <link rel="stylesheet" href="css/pikaday.min.css">
 	<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 </head>
 
@@ -32,19 +32,20 @@
                 <div class="heading">
                     <h2>Submit Article</h2>
                 </div>
-                <form class="shadow-lg" data-bs-theme="light">
+                <form id="submit-form" class="shadow-lg" data-bs-theme="light" action="/submit-form" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label class="form-label" for="headline">Article Headline</label>
-                        <input class="form-control item" type="text" id="headline" required>
+                        <input class="form-control item" type="text" id="headline" name="headline" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="short_text">Article short text description</label>
-                        <input class="form-control item" type="text" id="short_text" required>
+                        <input class="form-control item" type="text" id="short_text" name="short_text" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="image">Thumbnail Image</label>
-                        <input class="form-control item" type="file" id="image" required>
+                        <input class="form-control item" type="file" id="image" name="image" required>
                     </div>
+                    <input type="hidden" id="content" name="content" required>
                     <div class="mb-3">
                         <label class="form-label" for="message">Message</label>
                         <div id="editor">
@@ -66,17 +67,33 @@
             <div class="social-icons"><a class="me-3" href="#"><i class="icon ion-social-facebook"></i></a><a class="me-3" href="#"><i class="icon ion-social-instagram-outline"></i></a><a class="me-3" href="#"><i class="icon ion-social-twitter"></i></a></div>
         </div>
     </footer>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/pikaday.min.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/pikaday.min.js"></script>
+    <script src="js/theme.js"></script>
 	<!-- Include the Quill library -->
 	<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 
 	<!-- Initialize Quill editor -->
 	<script>
-	const quill = new Quill('#editor', {
-		theme: 'snow'
-	});
+        document.addEventListener("DOMContentLoaded", function () {
+            var quill = new Quill('#editor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, false] }],
+                        ['bold', 'italic', 'underline'],
+                        ['image', 'code-block']
+                    ]
+                }
+            });
+            
+            document.getElementById('submit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var content = quill.root.innerHTML;
+            document.getElementById('content').value = content;
+            this.submit(); // Submit the form
+        });
+        });
 	</script>
 </body>
 
