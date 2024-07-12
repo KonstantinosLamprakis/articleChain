@@ -12,6 +12,7 @@ contract EthArticleBlockchain {
         bool hasEvaluated;
         bool evaluationValue;
         address userWalletId;
+        string comments;
     }
 
     struct Article {
@@ -25,10 +26,13 @@ contract EthArticleBlockchain {
         int reviewNumber;
         bool isDeployed;
         bool isEvaluated;
+        mapping(address => Voter) voters;
+        mapping(address => Evaluator) reviewers;
     }
 
     address[5] public admins;
     uint public articleCount;
+    uint public targetScore = 1; // Assumed target score for evaluation
 
     mapping(uint256 => Article) public articles;
     mapping(address => bool) public journalistGroup;
@@ -40,7 +44,6 @@ contract EthArticleBlockchain {
     event ArticleVoted(uint articleId, address voter, bool vote);
     event ArticleDeployed(uint articleId);
     event ArticleFailed(uint articleId);
-    event ArticleFetched(uint articleId, address requester);
 
     modifier notOwner(uint256 articleId) {
         require(msg.sender != articles[articleId].journalistId, "Owner cannot vote");
@@ -97,13 +100,21 @@ contract EthArticleBlockchain {
     }
 
     function evaluateArticle(uint articleId, bool approve) public onlyJournalist notOwner(articleId) {
+        require(!articles[articleId].reviewers[msg.sender].hasEvaluated, "You have already reviewed");
         require(!articles[articleId].isEvaluated, "Article already evaluated");
+
+        articles[articleId].reviewers[msg.sender] = Evaluator({
+            hasEvaluated: true,
+            evaluationValue: approve,
+            userWalletId: msg.sender,
+            comments: ""
+        });
 
         articles[articleId].reviewNumber += 1;
 
         if (approve) {
             articles[articleId].reviewScore += 1;
-            if (articles[articleId].reviewScore >= 1) { 
+            if (articles[articleId].reviewScore >= targetScore) { 
                 articles[articleId].isEvaluated = true;
                 deployArticle(articleId);
             }
@@ -116,13 +127,60 @@ contract EthArticleBlockchain {
         emit ArticleEvaluated(articleId, msg.sender, approve);
     }
 
+    function voteArticle(uint articleId, bool vote) public onlyJournalist notOwner(articleId) {
+        require(!articles[articleId].voters[msg.sender].hasVoted, "You have already voted");
+        require(!articles[articleId].reviewers[msg.sender].hasEvaluated, "Reviewers cannot vote");
+        require(articles[articleId].isDeployed, "Article not yet evaluated or is rejected");
+
+        articles[articleId].voters[msg.sender] = Voter({
+            hasVoted: true,
+            vote: vote,
+            userWalletId: msg.sender
+        });
+
+        if (vote) {
+            articles[articleId].upvotes += 1;
+        } else {
+            articles[articleId].downvotes += 1;
+        }
+
+        emit ArticleVoted(articleId, msg.sender, vote);
+    }
+
     function deployArticle(uint articleId) internal {
         articles[articleId].isDeployed = true;
         emit ArticleDeployed(articleId);
     }
 
     function denyArticle(uint articleId) internal {
-        articles[articleId].isDeployed = false;
         emit ArticleFailed(articleId);
+    }
+
+    function getArticle(uint256 articleId) public view returns (
+        uint256 id, 
+        string memory filecoinCID, 
+        address journalistId, 
+        uint256 timeStamp,
+        int reviewScore,
+        int reviewNumber,
+        int upvotes,
+        int downvotes,
+        bool isEvaluated,
+        bool isDeployed
+    ) {
+        require(articleId > 0 && articleId <= articleCount, "Invalid article ID");
+        Article storage article = articles[articleId];
+        return (
+            article.id, 
+            article.filecoinCID, 
+            article.journalistId, 
+            article.timeStamp, 
+            article.reviewScore, 
+            article.reviewNumber, 
+            article.upvotes, 
+            article.downvotes,
+            article.isEvaluated,
+            article.isDeployed
+        );
     }
 }
