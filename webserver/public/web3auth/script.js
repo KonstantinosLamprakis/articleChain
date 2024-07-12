@@ -4,15 +4,12 @@ let walletServicesPlugin = null;
 (async function init() {
   $(".btn-logged-in").hide();
   $("#sign-tx").hide();
-  // IMP START - SDK Initialization
-  // IMP START - Dashboard Registration
 
-  const clientId = "BKKvD4b4JM8ltnzkKZj37FuIaxu0oaaeJyv-hpN5vceuHrejJdSL67rGkv5qgiacQ2g7-Lqmeq-AMn7EKzBg-G0"; // get your clientId from https://dashboard.web3auth.io
-  // IMP END - Dashboard Registration
+  const clientId = "BKKvD4b4JM8ltnzkKZj37FuIaxu0oaaeJyv-hpN5vceuHrejJdSL67rGkv5qgiacQ2g7-Lqmeq-AMn7EKzBg-G0";
 
   const chainConfig = {
     chainNamespace: "eip155",
-    chainId: "0x1", // Please use 0x1 for Mainnet
+    chainId: "0x1",
     rpcTarget: "https://rpc.ankr.com/eth",
     displayName: "Ethereum Mainnet",
     blockExplorerUrl: "https://etherscan.io/",
