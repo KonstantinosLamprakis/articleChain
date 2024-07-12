@@ -30,7 +30,6 @@ let walletServicesPlugin = null;
   web3auth.addPlugin(walletServicesPlugin); // Add the plugin to web3auth
 
   await web3auth.initModal();
-  // IMP END - SDK Initialization
 
   if (web3auth.connected) {
     $(".btn-logged-in").show();
