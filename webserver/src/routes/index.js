@@ -7,6 +7,7 @@ const { submitContactForm } = require('../controllers/contactController');
 const { submitArticle } = require('../filecoin/filecoin');
 const { indexArticle } = require('../articles/articles_index');
 const { pageArticle } = require('../articles/articles_page');
+const { reviewArticle } = require('../articles/article_review');
 const uploadDir = path.join(__dirname, '../../uploads');
 
 if (!fs.existsSync(uploadDir)) {
@@ -53,6 +54,8 @@ router.post('/submit-article', upload.single('image'), submitArticle);
 router.get('/indexArticle', indexArticle);
 
 router.get('/article', pageArticle);
+
+router.get('/review', reviewArticle);
 
 router.post('/contact-submit', upload.array('files'), submitContactForm);
 

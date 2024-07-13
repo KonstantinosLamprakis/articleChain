@@ -11,22 +11,7 @@ async function uploadFile(path) {
             path,
             apiKey
         );
-
-        const { Name, Hash, Size } = uploadResponse.data;
-
-        const dataToAppend = { Name, Hash, Size };
-
-        let existingData = [];
-        if (fs.existsSync('articles.json')) {
-            const data = fs.readFileSync('articles.json', 'utf8');
-            if (data) {
-                existingData = JSON.parse(data);
-            }
-        }
-
-        existingData.push(dataToAppend);
-        fs.writeFileSync('articles.json', JSON.stringify(existingData, null, 2));
-        return (dataToAppend.Hash);
+        return (uploadResponse.data.Hash);
     } catch (error) {
         console.error('Error uploading file:', error);
         return (false);
