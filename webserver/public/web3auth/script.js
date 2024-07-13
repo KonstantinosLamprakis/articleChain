@@ -2,11 +2,13 @@ export let web3auth = null;
 export let walletServicesPlugin = null;
 export let initPromise = null;
 
-(async function init() {
+async function init() {
+
   $(".btn-logged-in").hide();
   $("#sign-tx").hide();
 
-  const clientId = "BKKvD4b4JM8ltnzkKZj37FuIaxu0oaaeJyv-hpN5vceuHrejJdSL67rGkv5qgiacQ2g7-Lqmeq-AMn7EKzBg-G0";
+  // const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // public ID
+  const clientId = "BKKvD4b4JM8ltnzkKZj37FuIaxu0oaaeJyv-hpN5vceuHrejJdSL67rGkv5qgiacQ2g7-Lqmeq-AMn7EKzBg-G0"; // our ID
 
   const chainConfig = {
     chainNamespace: "eip155",
@@ -23,7 +25,17 @@ export let initPromise = null;
   web3auth = new window.Modal.Web3Auth({
     clientId,
     privateKeyProvider,
-    web3AuthNetwork: "sapphire_mainnet",
+    web3AuthNetwork: "sapphire_devnet",
+    uiConfig: {
+      appName: "verified news",
+      mode: "dark", // light, dark or auto
+      loginMethodsOrder: ["google", "twitter"],
+      logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+      logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+      defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl, tr
+      loginGridCol: 3,
+      primaryButton: "socialLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+    },
   });
 
   // Add wallet service plugin
@@ -42,58 +54,14 @@ export let initPromise = null;
     $(".btn-logged-out").show();
     $(".btn-logged-in").hide();
   }
-})();
+};
 
 $("#login").click(async function (event) {
   try {
-    // IMP START - Login
     await web3auth.connect();
-    // IMP END - Login
     $(".btn-logged-out").hide();
     $(".btn-logged-in").show();
     uiConsole("Logged in Successfully!");
-  } catch (error) {
-    console.error(error.message);
-  }
-});
-
-$("#get-user-info").click(async function (event) {
-  try {
-    // IMP START - Get User Information
-    const user = await web3auth.getUserInfo();
-    // IMP END - Get User Information
-    uiConsole(user);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
-
-// IMP START - Blockchain Calls
-$("#get-accounts").click(async function (event) {
-  try {
-    const web3 = new Web3(web3auth.provider);
-
-    // Get user's Ethereum public address
-    const address = await web3.eth.getAccounts();
-    uiConsole(address);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
-
-$("#get-balance").click(async function (event) {
-  try {
-    const web3 = new Web3(web3auth.provider);
-
-    // Get user's Ethereum public address
-    const address = (await web3.eth.getAccounts())[0];
-
-    // Get user's balance in ether
-    const balance = web3.utils.fromWei(
-      await web3.eth.getBalance(address), // Balance is in wei
-      "ether"
-    );
-    uiConsole(balance);
   } catch (error) {
     console.error(error.message);
   }
@@ -108,32 +76,10 @@ $("#show-wallet").click(async function (event) {
   }
 });
 
-$("#sign-message").click(async function (event) {
-  try {
-    const web3 = new Web3(web3auth.provider);
-    // Get user's Ethereum public address
-    const fromAddress = (await web3.eth.getAccounts())[0];
-
-    const originalMessage = "YOUR_MESSAGE";
-
-    // Sign the message
-    const signedMessage = await web3.eth.personal.sign(
-      originalMessage,
-      fromAddress,
-      "test password!" // configure your own password here.
-    );
-    uiConsole(signedMessage);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
-// IMP END - Blockchain Calls
 
 $("#logout").click(async function (event) {
   try {
-    // IMP START - Logout
     await web3auth.logout();
-    // IMP END - Logout
     $(".btn-logged-in").hide();
     $(".btn-logged-out").show();
   } catch (error) {

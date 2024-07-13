@@ -4,12 +4,13 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { submitContactForm } = require('../controllers/contactController');
-const { submitArticle } = require('../controllers/articleController');
+const { submitArticle } = require('../filecoin/filecoin');
 const uploadDir = path.join(__dirname, '../../uploads');
 
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, uploadDir);
@@ -19,19 +20,6 @@ const storage = multer.diskStorage({
     }
 });
 
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
-
-    if (extname && mimetype) {
-        cb(null, true);
-    } else {
-        cb(new Error('Only images are allowed!'), false);
-    }
-};
-
-const upload_img = multer({ storage, fileFilter });
 const upload = multer({ storage: storage });
 
 router.get('/', (req, res) => {
@@ -42,11 +30,27 @@ router.get('/contact', (req, res) => {
     res.render('layout', { content: 'contact_submit' });
 });
 
-router.get('/article', (req, res) => {
+router.get('/login', (req, res) => {
+    res.render('layout', { content: 'web3' });
+});
+
+router.get('/success', (req, res) => {
+    res.render('layout', { content: 'success', message: req.query.data });
+});
+
+router.get('/failure', (req, res) => {
+    res.render('layout', { content: 'failure', message: req.query.data });
+});
+
+router.get('/submit', (req, res) => {
     res.render('layout', { content: 'article_submit' });
 });
 
-router.post('/submit-article', upload_img.single('image'), submitArticle);
+router.get('/profile', (req, res) => {
+    res.render('layout', { content: 'profile' });
+});
+
+router.post('/submit-article', upload.single('image'), submitArticle);
 router.post('/contact-submit', upload.array('files'), submitContactForm);
 
 module.exports = router;

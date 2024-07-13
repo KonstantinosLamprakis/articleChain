@@ -1,10 +1,12 @@
 import { web3auth, initPromise } from "./script.js";
 
 (async function fetchInfo() {
+
 	await initPromise;
 
 	try {
 		if (web3auth.connected) {
+			// Fetch user information
 			const user = await web3auth.getUserInfo();
 			const web3 = new Web3(web3auth.provider);
 			const address = (await web3.eth.getAccounts())[0];
@@ -20,13 +22,12 @@ import { web3auth, initPromise } from "./script.js";
 				profilePicture.src = user.profileImage;
 				console.log("Profile image URL set to: ", user.profileImage);
 			} else {
-				console.log("Profile not available");
+				console.log("Profile image not available.");
 			}
 		} else {
-			console.log("You are not connected.");
+			console.log("You are not connected yet.");
 		}
 	} catch (error) {
-		console.log('Error fetching information:', error);
-		window.location.href = '/login';
+		console.error('Error fetching user information:', error);
 	}
 })();
