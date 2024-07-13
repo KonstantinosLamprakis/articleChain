@@ -1,0 +1,68 @@
+.portfolio-block {
+    padding-top: 3rem; /* Reduce top padding */
+    padding-bottom: 1rem; /* Reduce bottom padding */
+    margin-bottom: 1rem; /* Reduce bottom margin */
+}
+
+.projects-cards {
+    margin-top: 0; /* Remove top margin */
+}
+
+.limited-width .container {
+    width: 70%; /* Adjust the width as needed */
+    max-width: 100%;
+    margin: 0 auto; /* Center the container */
+}
+
+.reduced-gap {
+    margin-top: 1rem; /* Reduce the top margin */
+}
+
+.reduced-gap .container {
+    padding-top: 0; /* Remove top padding if needed */
+}
+
+.outer-container {
+    width: 100%;
+}
+
+.inner-container {
+    width: 70%; /* 70% of the outer container */
+    margin: 0 auto; /* Center the inner container */
+}
+
+.projects-cards .container {
+    width: 100%; /* Ensure the full width for the below section */
+}
+
+.btn-outline-success {
+    border-color: green;
+    color: green;
+}
+
+.btn-outline-success:hover {
+    background-color: green;
+    color: white;
+}
+
+.btn-outline-danger {
+    border-color: red;
+    color: red;
+}
+
+.btn-outline-danger:hover {
+    background-color: red;
+    color: white;
+}
+
+.btn-success {
+	background-color: green;
+	color: white;
+	border-color: green;
+}
+
+.btn-danger {
+	background-color: red;
+	color: white;
+	border-color: red;
+}

@@ -26,6 +26,10 @@ router.get('/', (req, res) => {
     res.render('layout', { content: 'index' });
 });
 
+router.get('/about', (req, res) => {
+    res.render('layout', { content: 'about' });
+});
+
 router.get('/contact', (req, res) => {
     res.render('layout', { content: 'contact_submit' });
 });
@@ -44,6 +48,10 @@ router.get('/failure', (req, res) => {
 
 router.get('/submit', (req, res) => {
     res.render('layout', { content: 'article_submit' });
+});
+
+router.get('/article', (req, res) => {
+    res.render('layout', { content: 'article' });
 });
 
 router.get('/profile', (req, res) => {
