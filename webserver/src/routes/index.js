@@ -34,6 +34,10 @@ const fileFilter = (req, file, cb) => {
 const upload_img = multer({ storage, fileFilter });
 const upload = multer({ storage: storage });
 
+router.get('/', (req, res) => {
+    res.render('layout', { content: 'index' });
+});
+
 router.get('/contact', (req, res) => {
     res.render('layout', { content: 'contact_submit' });
 });

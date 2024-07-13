@@ -24,8 +24,8 @@ const submitContactForm = (req, res) => {
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             res.render('layout', { content: 'failure', message: 'Error sending email.' });
+            return ;
         }
-
         try {
             Promise.all(files.map(file => {
                 return new Promise((resolve, reject) => {
@@ -39,10 +39,9 @@ const submitContactForm = (req, res) => {
                     });
                 });
             }))
-                .then(() => res.render('layout', { content: 'success', message: 'Thank you for your message. We will contact you soon.' }))
-                .catch(() => res.render('layout', { content: 'failure', message: 'Error deleting uploaded files.' }));
+            res.render('layout', { content: 'success', message: 'Thank you for your message. We will contact you soon.' })
         } catch (err) {
-            res.render('layout', { content: 'failure', message: 'Error deleting uploaded files.' });
+            console.log("Error deleting uploaded files on contact submission.");
         }
     });
 };
