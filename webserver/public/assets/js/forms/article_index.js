@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
             `;
     
-            // Append the article element to the container
             articleContainer.appendChild(articleElement);
         });
     } catch (error) {
