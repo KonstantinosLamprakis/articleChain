@@ -10,6 +10,22 @@
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/js/pikaday.min.js"></script>
 <script src="assets/js/theme.js"></script>
+
+
+<script>
+	document.getElementById('thumbs-up').addEventListener('click', function () {
+	  this.classList.toggle('active');
+	  document.getElementById('thumbs-down').classList.remove('active');
+	});
+  
+	document.getElementById('thumbs-down').addEventListener('click', function () {
+	  this.classList.toggle('active');
+	  document.getElementById('thumbs-up').classList.remove('active');
+	});
+  </script>
+  
+
+
 </body>
 
 </html>
