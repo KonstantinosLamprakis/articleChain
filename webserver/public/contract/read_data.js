@@ -1,4 +1,4 @@
-import { web3auth, contractABI, contractAddress, initPromise } from "./init.js";
+import { web3auth, contractABI, contractAddress, initPromise } from "../web3auth/init.js";
 
 export async function isJournalist(journalistAddress) {
 	try {
@@ -19,6 +19,7 @@ export async function isJournalist(journalistAddress) {
 export async function getArticle(articleId) {
 	try {
 		await initPromise;
+		console.log(contractABI);
 		const web3 = new Web3(web3auth.provider);
 		const contract = new web3.eth.Contract(contractABI, contractAddress);
 		const article = await contract.methods.getArticle(articleId).call();

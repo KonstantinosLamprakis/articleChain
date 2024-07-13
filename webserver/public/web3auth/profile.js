@@ -1,4 +1,4 @@
-import { web3auth, initPromise } from "./script.js";
+import { web3auth, initPromise } from "./init.js";
 
 (async function fetchInfo() {
 

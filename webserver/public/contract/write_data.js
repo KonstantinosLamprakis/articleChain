@@ -1,4 +1,4 @@
-import { web3auth, contractABI, contractAddress, initPromise } from "./init.js";
+import { web3auth, contractABI, contractAddress, initPromise } from "./web3auth/init.js";
 
 export async function contract_op() {
 	await initPromise;
