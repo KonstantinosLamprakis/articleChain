@@ -46,7 +46,6 @@ async function getArticle(articleId) {
 			isEvaluated: article.isEvaluated,
 			isPublished: article.isPublished,
 		};
-		console.log("Article found:", formattedArticle);
 		return formattedArticle;
 	} catch (error) {
 		console.error("Error getting article:", error);
@@ -71,7 +70,6 @@ async function searchArticle(articleId) {
 	try {
 
 		const article = await contract.methods.getArticle(articleId).call();
-		console.log("Article found:", article);
 		return article;
 	} catch (error) {
 		console.error("Error fetching article:", error);
