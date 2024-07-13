@@ -1,26 +1,19 @@
 <section class="portfolio-block mb-0">
     <div class="container">
         <div class="heading">
-            <h1>2,000,000 ETH Heist at ETHGlobal Brussels 2024!</h1>
+            <h1><%= article.headline %></h1>
         </div>
 		<div class="row">
 			<div class="col-md-6 col-lg-7">
-				<img src="/assets/img/article/police.jpg" alt="police" class="img-fluid float-start w-100 me-3 mb-5" style="max-height: 300px; object-fit: cover;">
+				<img src="<%= article.image %>" alt="<%= article.headline %>" class="img-fluid float-start w-100 me-3 mb-5" style="max-height: 300px; object-fit: cover;">
 			</div>
 			<div class="col-md-6 col-lg-5 p-4 mb-5 bg-light">
-				<h4 class="pb-3">TL;DR</h4>
-				<p class="fs-5">A participant at the ETHGlobal Brussels 2024 hackathon managed to steal 2,000,000 ETH from other participants who were too exhausted from coding all night. Authorities are currently tracking down the criminal while participants investigate the best caffeine-based drinks to prevent future incidents.</p>
+				<p class="fs-5"><%= article.short_text %></p>
 			</div>
 		</div>
-        <p class="text-muted fs-5">The ETHGlobal Brussels 2024 hackathon was marred by a shocking incident where a participant managed to steal 2,000,000 ETH, valued at approximately €5,750,340,000, from fellow attendees. The theft occurred in the early hours, taking advantage of the participants' fatigue from coding throughout the night.</p>
-        <img src="/assets/img/article/hackers.jpg" alt="Hackathon Scene" class="img-fluid float-end ms-3 mb-3" style="height: 250px;">
-        <p class="text-muted fs-5">Participants noticed the missing funds when they tried to check their balances in the morning. The organisers immediately contacted the authorities, and an investigation is underway to identify and apprehend the perpetrator.</p>
-        <p class="text-muted fs-5">One organiser commented, "It's a devastating blow to our community. We strive to create a safe and collaborative environment, and incidents like this undermine our efforts. We are working closely with law enforcement to resolve this matter swiftly."</p>
-        <p class="text-muted fs-5">The participants, who were left reeling from the incident, are also taking steps to prevent such occurrences in the future. A group of developers has started researching the most effective caffeine-based drinks to keep them alert and vigilant during such intense events. "Staying awake and focused is crucial. We need to ensure we don't become easy targets again," said one participant.</p>
-        <p class="text-muted fs-5">The police have also weighed in on the matter, with a spokesperson stating, "We are dedicated to tracking down the individual responsible for this theft. Such criminal activities will not be tolerated, and we are utilising all available resources to bring the perpetrator to justice."</p>
-        <p class="text-muted fs-5">ETHGlobal hackathons are renowned as the largest Ethereum hackathons in Europe, bringing together developers, designers, and entrepreneurs to collaborate and innovate. The community is determined to maintain the integrity of these events and ensure they continue to be a hub for groundbreaking projects.</p>
-        <p class="text-muted fs-5">As the investigation continues, the community remains hopeful that the thief will be brought to justice and that the lessons learned will help prevent similar incidents in the future. ETHGlobal has assured all participants that they are enhancing security measures to safeguard against such breaches.</p>
-        <p class="text-muted fs-5">Stay tuned for more updates as the story develops.</p>
+        <div>
+            <%- article.content %>
+        </div>
     </div>
 </section>
 

@@ -21,6 +21,19 @@ const prepareArticleData = (headline, imageBase64, short_text, content) => {
     return { filename, jsonContent };
 };
 
+async function convertImageToBase64(imagePath) {
+    try {
+        const imageBuffer = await fs.readFile(imagePath);
+
+        const imageBase64 = imageBuffer.toString('base64');
+
+        return imageBase64;
+    } catch (error) {
+        console.error('Error converting image to base64:', error);
+        throw error;
+    }
+}
+
 const deleteFile = async (filePath) => {
     const absolutePath = path.resolve(filePath);
     try {
@@ -35,6 +48,7 @@ const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
 const submitArticle = async (req, res) => {
     const { headline, short_text, content, humanCheck, humanCheckAnswer } = req.body;
     const image = req.file;
+    console.log('image :', image);
 
     if (!image) {
         res.json({ cid: null, message: 'Thumbnail image is mandatory' });
@@ -62,7 +76,7 @@ const submitArticle = async (req, res) => {
         return;
     }
 
-    const { filename, jsonContent } = prepareArticleData(headline, image.buffer.toString('base64'), short_text, content);
+    const { filename, jsonContent } = prepareArticleData(headline, convertImageToBase64(image.path), short_text, content);
 
     try {
         const filePath = path.join(__dirname, filename);
@@ -74,6 +88,7 @@ const submitArticle = async (req, res) => {
             res.json({ cid: null, message: 'Problem with the uploading to the filecoin!' });
 
         await deleteFile(filePath);
+        await deleteFile(image.path);
     } catch (err) {
         console.error('Error writing JSON file:', err);
         res.json({ cid: null, message: 'Error writing JSON file!' });
