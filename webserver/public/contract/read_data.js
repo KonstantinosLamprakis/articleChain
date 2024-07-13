@@ -19,7 +19,6 @@ export async function isJournalist(journalistAddress) {
 export async function getArticle(articleId) {
 	try {
 		await initPromise;
-		console.log(contractABI);
 		const web3 = new Web3(web3auth.provider);
 		const contract = new web3.eth.Contract(contractABI, contractAddress);
 		const article = await contract.methods.getArticle(articleId).call();
@@ -35,7 +34,6 @@ export async function getArticle(articleId) {
 			is_evaluated: article.is_evaluated,
 			is_deployed: article.is_deployed,
 		};
-
 		console.log("Article found:", formattedArticle);
 		return formattedArticle;
 	} catch (error) {
