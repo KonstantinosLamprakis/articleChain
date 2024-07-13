@@ -4,19 +4,14 @@ const mime = require('mime-types');
 const uploadFile = require('./upload');
 require('dotenv').config();
 
-const prepareArticleData = (headline, image, short_text, content) => {
+const prepareArticleData = (headline, imageBase64, short_text, content) => {
     const sanitizeTitle = headline.replace(/[^a-z0-9]/gi, '_').toLowerCase();
     const date = new Date().toISOString().slice(0, 10);
     const filename = `${sanitizeTitle}_${date}.json`;
 
     const formData = {
         headline,
-        image: {
-            originalname: image ? image.originalname : '',
-            mimetype: image ? image.mimetype : '',
-            size: image ? image.size : 0,
-            buffer: image ? image.buffer.toString('base64') : ''
-        },
+        image: `data:image/jpeg;base64,${imageBase64}`,
         short_text,
         content
     };
@@ -25,6 +20,19 @@ const prepareArticleData = (headline, image, short_text, content) => {
 
     return { filename, jsonContent };
 };
+
+async function convertImageToBase64(imagePath) {
+    try {
+        const imageBuffer = await fs.readFile(imagePath);
+
+        const imageBase64 = imageBuffer.toString('base64');
+
+        return imageBase64;
+    } catch (error) {
+        console.error('Error converting image to base64:', error);
+        throw error;
+    }
+}
 
 const deleteFile = async (filePath) => {
     const absolutePath = path.resolve(filePath);
@@ -67,7 +75,7 @@ const submitArticle = async (req, res) => {
         return;
     }
 
-    const { filename, jsonContent } = prepareArticleData(headline, image, short_text, content);
+    const { filename, jsonContent } = prepareArticleData(headline, await convertImageToBase64(image.path), short_text, content);
 
     try {
         const filePath = path.join(__dirname, filename);
@@ -79,6 +87,7 @@ const submitArticle = async (req, res) => {
             res.json({ cid: null, message: 'Problem with the uploading to the filecoin!' });
 
         await deleteFile(filePath);
+        await deleteFile(image.path);
     } catch (err) {
         console.error('Error writing JSON file:', err);
         res.json({ cid: null, message: 'Error writing JSON file!' });
