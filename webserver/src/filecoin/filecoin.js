@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
-const multer = require('multer');
+const mime = require('mime-types');
 const uploadFile = require('./upload');
 require('dotenv').config();
 
@@ -35,8 +35,7 @@ const deleteFile = async (filePath) => {
     }
 };
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
 const submitArticle = async (req, res) => {
     const { headline, short_text, content, humanCheck, humanCheckAnswer } = req.body;
@@ -47,6 +46,12 @@ const submitArticle = async (req, res) => {
         return;
     }
 
+    const mimeType = mime.lookup(image.originalname);
+    if (!allowedImageTypes.includes(mimeType)) {
+        res.json({ cid: null, message: 'Invalid image type. Allowed types are: JPG, PNG, GIF, WEBP' });
+        return;
+    }
+    
     if (!short_text) {
         res.json({ cid: null, message: 'Short text is mandatory' });
         return;
