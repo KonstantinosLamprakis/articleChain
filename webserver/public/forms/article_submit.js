@@ -38,8 +38,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (data.cid) {
         console.log(data.cid);
-        createArticle(data.cid);
-        window.location.href = '/success?data=' + encodeURIComponent(data.message);;
+        const article = createArticle(data.cid);
+        if (article) {
+          window.location.href = '/success?data=' + encodeURIComponent(data.message);;
+        }
+        else {
+          window.location.href = '/failure?data=' + encodeURIComponent(data.message);
+        }
       } else {
         window.location.href = '/failure?data=' + encodeURIComponent(data.message);
       }
