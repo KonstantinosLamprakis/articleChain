@@ -1,23 +1,5 @@
 const { fetchJsonFromHash } = require('./articles_index');
-const fs = require('fs').promises;
-const path = require('path');
-
-async function fetchJSONFile() {
-    try {
-        const filePath = 'articles.json';
-        const data = await fs.readFile(filePath, 'utf8');
-        return JSON.parse(data);
-    } catch (error) {
-        console.error('Error reading JSON file:', error);
-        throw new Error('Failed to read JSON file');
-    }
-}
-
-function getHashById(id, jsonData) {
-    const found = jsonData[id - 1];
-    return found ? found.Hash : null;
-}
-
+const { getArticle } = require('../contract/contract');
 
 const pageArticle = async (req, res) => {
     const { id } = req.query;
@@ -28,15 +10,14 @@ const pageArticle = async (req, res) => {
     }
 
     try {
-        const jsonData = await fetchJSONFile();
-        const hash = getHashById(id, jsonData);
+        hash = getArticle(id).hash;
 
         if (!hash) {
             console.error('Article hash not found for id:', id);
             return res.status(404).send('Article not found');
         }
 
-        const articleWithContent = await fetchJsonFromHash(hash); // Fetch article content based on hash
+        const articleWithContent = await fetchJsonFromHash(hash);
 
         if (!articleWithContent) {
             console.error('Article is undefined or null');

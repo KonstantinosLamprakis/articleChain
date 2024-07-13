@@ -1,10 +1,5 @@
-const express = require('express');
 const axios = require('axios');
-const fs = require('fs');
-
-const articles = JSON.parse(fs.readFileSync('articles.json', 'utf8'));
-
-const { getArticle } = require('../contract/contract');
+const { getArticle, searchArticle } = require('../contract/contract');
 
 async function fetchJsonFromHash(hash) {
   const test = await getArticle(1);
@@ -20,17 +15,17 @@ async function fetchJsonFromHash(hash) {
 
 async function aggregateJsonData() {
   const aggregatedData = [];
-  const uniqueHashes = [...new Set(articles.map(article => article.Hash))];
 
-  for (let i = 0; i < uniqueHashes.length; i++) {
-    const hash = uniqueHashes[i];
-    const data = await fetchJsonFromHash(hash);
-    if (data) {
-        data.id = i + 1;
+  for (let i = 1; searchArticle(i); i++) {
+    const hash = getArticle(i).hash;
+    if (hash) {
+      const data = await fetchJsonFromHash(hash);
+      if (data) {
+        data.id = i;
         aggregatedData.push(data);
+      }
     }
-}
-
+  }
   return aggregatedData;
 }
 
@@ -44,4 +39,4 @@ const indexArticle = async (req, res) => {
   }
 };
 
-module.exports = { indexArticle , fetchJsonFromHash };
+module.exports = { indexArticle, fetchJsonFromHash };

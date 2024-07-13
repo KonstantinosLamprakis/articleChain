@@ -1,9 +1,9 @@
 const axios = require('axios');
-const { getArticle, searchArticle } = require('../contract/contract_interact');
+const { getArticle, searchArticle } = require('../contract/contract');
 
 async function fetchAllArticleIds() {
 	const articleIds = [];
-	let articleId = 26;
+	let articleId = 1;
 
 	while (true) {
 		const article = await searchArticle(articleId);

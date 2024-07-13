@@ -75,6 +75,7 @@ async function searchArticle(articleId) {
 		return article;
 	} catch (error) {
 		console.error("Error fetching article:", error);
+		return false;
 	}
 }
 
