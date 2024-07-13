@@ -29,6 +29,10 @@ router.get('/', (req, res) => {
     res.render('layout', { content: 'index' });
 });
 
+router.get('/review', (req, res) => {
+    res.render('layout', { content: 'review' });
+});
+
 router.get('/contact', (req, res) => {
     res.render('layout', { content: 'contact_submit' });
 });
@@ -55,7 +59,7 @@ router.get('/indexArticle', indexArticle);
 
 router.get('/article', pageArticle);
 
-router.get('/review', reviewArticle);
+router.get('/reviewArticle', reviewArticle);
 
 router.post('/contact-submit', upload.array('files'), submitContactForm);
 
