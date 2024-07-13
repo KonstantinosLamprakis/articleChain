@@ -15,10 +15,10 @@ async function init() {
   const clientId = "BKKvD4b4JM8ltnzkKZj37FuIaxu0oaaeJyv-hpN5vceuHrejJdSL67rGkv5qgiacQ2g7-Lqmeq-AMn7EKzBg-G0"; // our ID
   const chainConfig = {
     chainNamespace: "eip155",
-    chainId: "0x1",
-    rpcTarget: "https://rpc.ankr.com/eth",
-    displayName: "Ethereum Mainnet",
-    blockExplorerUrl: "https://etherscan.io/",
+    chainId: "0xaa36a7",
+    rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+    displayName: "Ethereum Sepolia Testnet",
+    blockExplorerUrl: "https://sepolia.etherscan.io",
     ticker: "ETH",
     tickerName: "Ethereum",
   };

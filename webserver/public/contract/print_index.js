@@ -1,5 +1,6 @@
-import { getArticle } from "../contract/read_data.js";
+import { getArticle, isJournalist } from "../contract/read_data.js";
+import { addJournalist } from "../contract/write_data.js";
 
 (async function test() {
-    console.log(getArticle(1));
+    getArticle(1);
 })();
