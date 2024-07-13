@@ -4,21 +4,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         const articles = await response.json();
         const articleContainer = document.getElementById('article-container');
         articles.forEach(article => {
-            const { headline, image, short_text } = article; // Ensure `id` or unique identifier is available in the article object
+            const { id, headline, image, short_text } = article;
+    
             const articleElement = document.createElement('div');
-            articleElement.classList.add('col');
+            articleElement.classList.add('col', 'mb-4');
             articleElement.innerHTML = `
-				<a href="/article?id=0" class="text-decoration-none text-dark">
-                    <div class="col-md-6 col-lg-6">
-                        <div class="card border-0"><a href="#"><img class="card-img-top scale-on-hover" src="${image}"></a>
-                            <div class="card-body">
-                                <h3><a href="#">${headline}</a></h3>
-                                <p class="text-muted card-text">${short_text}</p>
-                            </div>
+                <div class="card border-0">
+                    <a href="/article?id=${id}" class="text-decoration-none text-dark">
+                        <img class="card-img-top scale-on-hover" src="${image}" alt="${headline}">
+                        <div class="card-body">
+                            <h3>${headline}</h3>
+                            <p class="text-muted card-text">${short_text}</p>
                         </div>
-                    </div>
-				</a>
-			`;
+                    </a>
+                </div>
+            `;
+    
+            // Append the article element to the container
             articleContainer.appendChild(articleElement);
         });
     } catch (error) {
