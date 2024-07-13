@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (data.cid) {
         console.log(data.cid);
-        window.location.href = `/success?cid=${data.cid}`;
+        window.location.href = `/success`;
       } else {
         console.error('Failed to retrieve CID from the response');
         window.location.href = '/failure';
