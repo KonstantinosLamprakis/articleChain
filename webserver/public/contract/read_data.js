@@ -63,7 +63,6 @@ export async function searchArticle(articleId) {
 		const web3 = new Web3(web3auth.provider);
 		const contract = new web3.eth.Contract(contractABI, contractAddress);
 		const article = await contract.methods.getArticle(articleId).call();
-		console.log("Article found:", article);
 		return article;
 	} catch (error) {
 		console.error("Error fetching article:", error);

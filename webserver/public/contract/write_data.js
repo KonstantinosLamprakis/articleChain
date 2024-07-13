@@ -1,26 +1,5 @@
 import { web3auth, contractABI, contractAddress, initPromise } from "../web3auth/init.js";
 
-export async function contract_op() {
-	await initPromise;
-	if (!web3auth.connected) {
-		console.log("Please connect your wallet first");
-		return;
-	}
-	try {
-		const web3 = new Web3(web3auth.provider);
-		const contract = new web3.eth.Contract(contractABI, contractAddress);
-
-		const message = await contract.methods.getArticle(1).call();
-		console.log(message["is_evaluated"]);
-	} catch (error) {
-		console.error("Error contract:", error);
-		if (error?.data) {
-			console.error("Error data:", error.data);
-		}
-		return false;
-	}
-}
-
 export async function addJournalist(journalistAddress) {
 	await initPromise;
 	if (!web3auth.connected) {

@@ -10,7 +10,7 @@ const pageArticle = async (req, res) => {
     }
 
     try {
-        hash = getArticle(id).hash;
+        hash = getArticle(id).filecoinCID;
 
         if (!hash) {
             console.error('Article hash not found for id:', id);
