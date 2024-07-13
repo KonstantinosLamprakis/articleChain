@@ -15,10 +15,6 @@ router.get('/contact', (req, res) => {
     res.render('layout', { content: 'contact_submit' });
 });
 
-router.get('/login', (req, res) => {
-    res.render('layout', { content: 'web3' });
-});
-
 router.get('/success', (req, res) => {
     res.render('layout', { content: 'success', message: 'succesfull' });
 });
@@ -29,6 +25,10 @@ router.get('/failure', (req, res) => {
 
 router.get('/submit', (req, res) => {
     res.render('layout', { content: 'article_submit' });
+});
+
+router.get('/profile', (req, res) => {
+    res.render('layout', { content: 'profile' });
 });
 
 router.post('/submit-article', upload.single('image'), submitArticle);

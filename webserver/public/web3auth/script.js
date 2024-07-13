@@ -2,7 +2,8 @@ export let web3auth = null;
 export let walletServicesPlugin = null;
 export let initPromise = null;
 
-(async function init() {
+async function init() {
+
   $(".btn-logged-in").hide();
   $("#sign-tx").hide();
 
@@ -53,7 +54,7 @@ export let initPromise = null;
     $(".btn-logged-out").show();
     $(".btn-logged-in").hide();
   }
-})();
+};
 
 $("#login").click(async function (event) {
   try {
@@ -61,45 +62,6 @@ $("#login").click(async function (event) {
     $(".btn-logged-out").hide();
     $(".btn-logged-in").show();
     uiConsole("Logged in Successfully!");
-  } catch (error) {
-    console.error(error.message);
-  }
-});
-
-$("#get-user-info").click(async function (event) {
-  try {
-    const user = await web3auth.getUserInfo();
-    uiConsole(user);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
-
-$("#get-accounts").click(async function (event) {
-  try {
-    const web3 = new Web3(web3auth.provider);
-
-    // Get user's Ethereum public address
-    const address = await web3.eth.getAccounts();
-    uiConsole(address);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
-
-$("#get-balance").click(async function (event) {
-  try {
-    const web3 = new Web3(web3auth.provider);
-
-    // Get user's Ethereum public address
-    const address = (await web3.eth.getAccounts())[0];
-
-    // Get user's balance in ether
-    const balance = web3.utils.fromWei(
-      await web3.eth.getBalance(address), // Balance is in wei
-      "ether"
-    );
-    uiConsole(balance);
   } catch (error) {
     console.error(error.message);
   }
@@ -114,25 +76,6 @@ $("#show-wallet").click(async function (event) {
   }
 });
 
-$("#sign-message").click(async function (event) {
-  try {
-    const web3 = new Web3(web3auth.provider);
-    // Get user's Ethereum public address
-    const fromAddress = (await web3.eth.getAccounts())[0];
-
-    const originalMessage = "YOUR_MESSAGE";
-
-    // Sign the message
-    const signedMessage = await web3.eth.personal.sign(
-      originalMessage,
-      fromAddress,
-      "test password!" // configure your own password here.
-    );
-    uiConsole(signedMessage);
-  } catch (error) {
-    console.error(error.message);
-  }
-});
 
 $("#logout").click(async function (event) {
   try {
@@ -152,4 +95,4 @@ function uiConsole(...args) {
   }
 }
 
-// initPromise = init();
+initPromise = init();

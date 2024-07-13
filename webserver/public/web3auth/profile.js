@@ -29,6 +29,5 @@ import { web3auth, initPromise } from "./script.js";
 		}
 	} catch (error) {
 		console.error('Error fetching user information:', error);
-		window.location.href = '/login';
 	}
 })();
