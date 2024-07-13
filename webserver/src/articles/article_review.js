@@ -8,7 +8,8 @@ async function aggregateJsonDataReview() {
     const articles = await getAllArticles();
     for (const article of articles) {
       const hash = article.filecoinCID;
-      if (hash) {
+      console.log('article:', article);
+      if (hash && article.isEvaluated == false) {
         const data = await fetchJsonFromHash(hash);
         if (data) {
           const id = typeof article.id === 'bigint' ? article.id.toString() : article.id;

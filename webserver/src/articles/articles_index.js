@@ -17,7 +17,8 @@ async function aggregateJsonData() {
     const articles = await getAllArticles();
     for (const article of articles) {
       const hash = article.filecoinCID;
-      if (hash) {
+      if (hash) { 
+      // if (hash && article.isPublished == true) {
         const data = await fetchJsonFromHash(hash);
         if (data) {
           const id = typeof article.id === 'bigint' ? article.id.toString() : article.id;
