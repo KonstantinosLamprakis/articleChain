@@ -1,0 +1,1 @@
+import { web3auth, contractABI, contractAddress } from "./init.js";
