@@ -141,9 +141,10 @@ async function voteArticle(articleId, vote) {
 async function getAllArticles() {
 	try {
 		const tx = await contract.methods.getAllArticles().call();
-		console.log("Get all articles: ", tx);
+		return tx;
 	} catch (error) {
 		console.error("Error, get all articles failed", error);
+		return null;
 	}
 }
 

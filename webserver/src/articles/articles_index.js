@@ -2,8 +2,6 @@ const axios = require('axios');
 const { getArticle, searchArticle, getAllArticles } = require('../contract/contract');
 
 async function fetchJsonFromHash(hash) {
-  const test = await getArticle(1);
-  console.log(test);
   try {
     const response = await axios.get(`https://gateway.lighthouse.storage/ipfs/${hash}`);
     return response.data;
@@ -17,18 +15,21 @@ async function aggregateJsonData() {
   const aggregatedData = [];
 
   const res = await getAllArticles();
-  console.log(res);
-  // for (let i = 1; await searchArticle(i); i++) {
-  //   const hash = await getArticle(i).filecoinCID;
-  //   if (hash) {
-  //     const data = await fetchJsonFromHash(hash);
-  //     if (data) {
-  //       data.id = i;
-  //       aggregatedData.push(data);
-        
-  //     }
-  //   }
-  // }
+  const filteredData = res.map(item => ({
+    id: item.id,
+    filecoinCID: item.filecoinCID
+  }));
+  for (const item of filteredData) {
+    // console.log(`hash: ${item.filecoinCID}, ID: ${item.id}`);
+    hash = item.filecoinCID;
+    if (hash) {
+      const data = await fetchJsonFromHash(hash);
+      if (data) {
+        data.id = item.id;
+        aggregatedData.push(data);
+      }
+    }
+  }
   return aggregatedData;
 }
 
