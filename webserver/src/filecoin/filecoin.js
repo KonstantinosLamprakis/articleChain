@@ -48,7 +48,6 @@ const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
 const submitArticle = async (req, res) => {
     const { headline, short_text, content, humanCheck, humanCheckAnswer } = req.body;
     const image = req.file;
-    console.log('image :', image);
 
     if (!image) {
         res.json({ cid: null, message: 'Thumbnail image is mandatory' });
@@ -76,7 +75,7 @@ const submitArticle = async (req, res) => {
         return;
     }
 
-    const { filename, jsonContent } = prepareArticleData(headline, convertImageToBase64(image.path), short_text, content);
+    const { filename, jsonContent } = prepareArticleData(headline, await convertImageToBase64(image.path), short_text, content);
 
     try {
         const filePath = path.join(__dirname, filename);
