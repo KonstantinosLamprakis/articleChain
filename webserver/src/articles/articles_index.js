@@ -13,24 +13,24 @@ async function fetchJsonFromHash(hash) {
 
 async function aggregateJsonData() {
   const aggregatedData = [];
-
-  const res = await getAllArticles();
-  const filteredData = res.map(item => ({
-    id: item.id,
-    filecoinCID: item.filecoinCID
-  }));
-  for (const item of filteredData) {
-    // console.log(`hash: ${item.filecoinCID}, ID: ${item.id}`);
-    hash = item.filecoinCID;
-    if (hash) {
-      const data = await fetchJsonFromHash(hash);
-      if (data) {
-        data.id = item.id;
-        aggregatedData.push(data);
+  try {
+    const articles = await getAllArticles();
+    for (const article of articles) {
+      const hash = article.filecoinCID;
+      if (hash) {
+        const data = await fetchJsonFromHash(hash);
+        if (data) {
+          const id = typeof article.id === 'bigint' ? article.id.toString() : article.id;
+          data.id = id;
+          aggregatedData.push(data);
+        }
       }
     }
+    return aggregatedData;
+  } catch (error) {
+    console.error('Error aggregating data:', error);
+    return [];
   }
-  return aggregatedData;
 }
 
 const indexArticle = async (req, res) => {
