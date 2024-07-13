@@ -61,6 +61,10 @@ router.get('/profile', (req, res) => {
     res.render('layout', { content: 'profile' });
 });
 
+router.use((req, res, next) => {
+    res.render('layout', { content: '404' });
+  });
+
 router.post('/submit-article', upload.single('image'), submitArticle);
 
 router.get('/indexArticle', indexArticle);
