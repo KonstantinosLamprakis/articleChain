@@ -20,11 +20,11 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/success', (req, res) => {
-    res.render('layout', { content: 'success', message: 'succesfull' });
+    res.render('layout', { content: 'success', message: req.query.data });
 });
 
 router.get('/failure', (req, res) => {
-    res.render('layout', { content: 'failure', message: 'failed' });
+    res.render('layout', { content: 'failure', message: req.query.data });
 });
 
 router.get('/submit', (req, res) => {

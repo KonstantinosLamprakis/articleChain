@@ -4,7 +4,6 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-
 require('dotenv').config();
 
 const routes = require('./src/routes/index');
@@ -16,5 +15,5 @@ app.use(express.static('public'));
 app.use('/', routes);
 
 app.listen(port, () => {
-  console.log(`Server started at: http://localhost:$(port)`);
+  console.log(`Server started at: http://localhost:${port}`);
 });

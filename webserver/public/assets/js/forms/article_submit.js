@@ -37,14 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (data.cid) {
         console.log(data.cid);
-        window.location.href = `/success`;
+        window.location.href = '/success?data=' + encodeURIComponent(data.message);;
       } else {
-        console.error('Failed to retrieve CID from the response');
-        window.location.href = '/failure';
+        window.location.href = '/failure?data=' + encodeURIComponent(data.message);
       }
     } catch (error) {
       console.error('Error:', error);
-      window.location.href = '/failure';
+      window.location.href = '/failure?data=' + encodeURIComponent(data.message);
     } finally {
       waitingIcon.style.display = 'none';
       submitButton.disabled = false;
