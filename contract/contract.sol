@@ -38,11 +38,12 @@ contract EthArticleBlockchain {
         bool    isEvaluated;
     }
 
-    address[4] public admins = [
+    address[5] public admins = [
 	address(0x9F1Ce4B3392f849fA142C0b35932b140B0F48663),
 	address(0x7eb5c634A059C2FaA7A39ADFaADce749A045686D),
 	address(0x1c6af370b04d2979a92DFa4614059210Af411914),
 	address(0x45096426d5CEb2bC2D9e8FB73f36F91Bf5A877CB),
+	address(0xE72234a7A2289ad7B1C1c16004668e3E2D3F876d)
     ];
 
     uint public articleCount;
