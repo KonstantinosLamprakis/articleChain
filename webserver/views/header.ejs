@@ -27,16 +27,16 @@
                     <li class="nav-item"><a class="nav-link" href="about-us">About Us</a></li>
                     <li class="nav-item"><a class="nav-link" href="our-team">Our Team</a></li>
                     <li class="nav-item"><a class="nav-link active" href="contact">Contact</a></li>
-                    <li class="nav-item"><button type="button" class="btn btn-primary">Login</button></li>
+                    <div class="grid btn-logged-out"><button id="login" class="btn">Login</button></div>
                     <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        <button class="btn btn-primary dropdown-toggle btn-logged-in" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             Journalist Actions
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="submit">Submit Article</a></li>
                             <li><a class="dropdown-item" href="review">Review Articles</a></li>
-                            <li><a class="dropdown-item" href="#">Log Out</a></li>
+                            <li><a class="dropdown-item" id="logout">Log Out</a></li>
                         </ul>
                     </div>
                 </ul>

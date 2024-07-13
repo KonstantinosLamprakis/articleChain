@@ -1,5 +1,6 @@
-let web3auth = null;
-let walletServicesPlugin = null;
+export let web3auth = null;
+export let walletServicesPlugin = null;
+export let initPromise = null;
 
 (async function init() {
   $(".btn-logged-in").hide();
@@ -140,3 +141,5 @@ function uiConsole(...args) {
     console.log(...args);
   }
 }
+
+// initPromise = init();
