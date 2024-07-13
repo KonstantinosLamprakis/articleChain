@@ -1,22 +1,16 @@
 const fs = require('fs').promises;
 const path = require('path');
-const multer = require('multer');
 const uploadFile = require('./upload');
 require('dotenv').config();
 
-const prepareArticleData = (headline, image, short_text, content) => {
+const prepareArticleData = (headline, imageBase64, short_text, content) => {
     const sanitizeTitle = headline.replace(/[^a-z0-9]/gi, '_').toLowerCase();
     const date = new Date().toISOString().slice(0, 10);
     const filename = `${sanitizeTitle}_${date}.json`;
 
     const formData = {
         headline,
-        image: {
-            originalname: image ? image.originalname : '',
-            mimetype: image ? image.mimetype : '',
-            size: image ? image.size : 0,
-            buffer: image ? image.buffer.toString('base64') : ''
-        },
+        image: `data:image/jpeg;base64,${imageBase64}`,
         short_text,
         content
     };
@@ -35,8 +29,6 @@ const deleteFile = async (filePath) => {
     }
 };
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 
 const submitArticle = async (req, res) => {
     const { headline, short_text, content, humanCheck, humanCheckAnswer } = req.body;
@@ -62,7 +54,7 @@ const submitArticle = async (req, res) => {
         return;
     }
 
-    const { filename, jsonContent } = prepareArticleData(headline, image, short_text, content);
+    const { filename, jsonContent } = prepareArticleData(headline, image.buffer.toString('base64'), short_text, content);
 
     try {
         const filePath = path.join(__dirname, filename);
