@@ -1,0 +1,43 @@
+<section class="portfolio-block">
+    <div class="container">
+        <div class="heading">
+            <h2>Submit Article</h2>
+        </div>
+        <form id="submit-article" class="shadow-lg" data-bs-theme="light" action="/submit-article" method="POST"
+            enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label" for="headline">Article headline</label>
+                <input class="form-control item" type="text" id="headline" name="headline" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="short_text">Article short text description</label>
+                <input class="form-control item" type="text" id="short_text" name="short_text" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="image">Thumbnail Image</label>
+                <input class="form-control item" type="file" id="image" name="image" required />
+            </div>
+            <input type="hidden" id="content" name="content" required />
+            <div class="mb-3">
+                <label class="form-label" for="message">Article body</label>
+                <div id="editor"></div>
+            </div>
+            <div class="mb-3">
+                <label for="humanCheck" class="form-label" id="humanCheckLabel"></label>
+                <input type="number" class="form-control" id="humanCheck" name="humanCheck" required />
+                <div class="invalid-feedback">
+                    Please verify you are a human by answering correctly.
+                </div>
+            </div>
+            <input type="hidden" id="humanCheckAnswer" name="humanCheckAnswer" />
+            <div class="mb-3 mt-4">
+                <button class="btn btn-primary btn-lg d-block w-100" type="submit">
+                    Submit Article
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script type="module" src="assets/js/forms/article_submit.js"></script>

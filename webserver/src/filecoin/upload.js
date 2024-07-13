@@ -8,7 +8,6 @@ async function uploadFile(path) {
             path,
             apiKey
         );
-        console.log('Upload Response:', uploadResponse);
 
         const { Name, Hash, Size } = uploadResponse.data;
 

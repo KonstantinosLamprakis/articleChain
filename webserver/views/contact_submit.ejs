@@ -1,0 +1,38 @@
+<section class="portfolio-block">
+    <div class="container">
+        <div class="heading">
+            <h2>Contact Us</h2>
+        </div>
+        <form id="submit-form" class="shadow-lg" data-bs-theme="light" action="/contact-submit" method="POST"
+            enctype="multipart/form-data">
+            <div class="mb-3"><label class="form-label" for="Name">Your Name</label>
+                <input class="form-control item" type="text" id="Name" name="Name" required>
+            </div>
+            <div class="mb-3"><label class="form-label" for="Email">Email</label>
+                <input class="form-control item" type="email" id="Email" name="Email" required>
+            </div>
+            <div class="mb-3"><label class="form-label" for="Message">Message</label>
+                <textarea class="form-control item" id="Message" name="Message" rows="6" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="files" class="form-label">Upload Files</label>
+                <input type="file" class="form-control" id="files" name="files" multiple>
+            </div>
+            <div class="mb-3">
+                <label for="humanCheck" class="form-label" id="humanCheckLabel"></label>
+                <input type="number" class="form-control" id="humanCheck" name="humanCheck" required>
+                <div class="invalid-feedback">
+                    Please verify you are a human by answering correctly.
+                </div>
+            </div>
+            <input type="hidden" id="humanCheckAnswer" name="humanCheckAnswer">
+            <div class="mb-3 mt-4">
+                <button class="btn btn-primary btn-lg d-block w-100" type="submit">
+                    Submit Form
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script type="module" src="assets/js/forms/contact_submit.js"></script>

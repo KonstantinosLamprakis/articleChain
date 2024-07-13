@@ -22,7 +22,7 @@ module.exports = (app) => {
     const storage = multer.memoryStorage();
     const upload = multer({ storage: storage });
 
-    app.post('/submit', upload.single('image'), (req, res) => {
+    app.post('/submit-article', upload.single('image'), (req, res) => {
         const { title, shortDescription, content, humanCheck, humanCheckAnswer } = req.body;
         const image = req.file;
     

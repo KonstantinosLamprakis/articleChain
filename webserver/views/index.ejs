@@ -1,66 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submit an Article</title>
-    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-    <link rel="stylesheet" href="/path/to/your/css/styles.css"> <!-- Adjust the path as needed -->
-</head>
-<body>
-    <div class="container mt-5">
-        <h1>Submit an Article</h1>
-        <form id="submit-form" action="/submit" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="formTitle" class="form-label">Title</label>
-                <input type="text" class="form-control" id="formTitle" name="title" required>
-                <div class="invalid-feedback">
-                    Please enter a title.
+<section class="portfolio-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-4 p-6">
+                <div class="card border-0 p-6 me-6"><img class="card-img" src="assets/img/template/earth.jpg" alt="Verified news">
                 </div>
             </div>
-            <div class="mb-3">
-                <label for="image" class="form-label">Upload an Image</label>
-                <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
-                <div class="invalid-feedback">
-                    Please upload an image.
-                </div>
+            <div class="col-md-6 col-lg-8 p-6">
+                <h3>Verified News</h3>
+                <h5 class="text-muted fw-light" >Verified News is committed to delivering reliable and trustworthy journalism. Every article published on our platform undergoes a rigorous fact-checking process and is peer-reviewed by our team of experienced journalists. To ensure transparency and integrity, each article is stored on a blockchain, providing an immutable record of our commitment to truth and accountability. Trust Verified News for accurate and verified information.</h5>
             </div>
-            <div class="mb-3">
-                <label for="shortDescription" class="form-label">Short Description</label>
-                <textarea class="form-control" id="shortDescription" name="shortDescription" rows="2" required></textarea>
-                <div class="invalid-feedback">
-                    Please enter a short description.
-                </div>
-            </div>
-            <div id="editor-container"></div>
-            <input type="hidden" id="content" name="content" required>
-            <div class="mb-3">
-                <label for="humanCheck" class="form-label" id="humanCheckLabel">What is 2 + 2?</label>
-                <input type="number" class="form-control" id="humanCheck" name="humanCheck" required>
-                <div class="invalid-feedback">
-                    Please verify you are a human by answering correctly.
-                </div>
-            </div>
-            <input type="hidden" id="humanCheckAnswer" name="humanCheckAnswer" value="4">
-            <button type="submit" class="btn btn-primary mb-3">Submit</button>
-        </form>
-        <div id="waiting-icon" class="waiting-icon" style="display: none;">
-            <img src="/path/to/your/waiting-icon.gif" alt="Waiting...">
         </div>
     </div>
+</section>
 
-    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
-    <script>
-        var quill = new Quill('#editor-container', {
-            theme: 'snow'
-        });
+<section class="portfolio-block projects-cards">
+    <div class="container">
+        <div class="heading">
+            <h3>Top Verified News</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <div class="card border-0"><a href="#"><img class="card-img-top scale-on-hover" src="assets/img/nature/image1.jpg" alt="Card Image"></a>
+                    <div class="card-body">
+                        <h3><a href="#">Lorem Ipsum</a></h3>
+                        <p class="text-muted card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <div class="card border-0"><a href="#"><img class="card-img-top scale-on-hover" src="assets/img/nature/image2.jpg" alt="Card Image"></a>
+                    <div class="card-body">
+                        <h3><a href="#">Lorem Ipsum</a></h3>
+                        <p class="text-muted card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <div class="card border-0"><a href="#"><img class="card-img-top scale-on-hover" src="assets/img/nature/image4.jpg" alt="Card Image"></a>
+                    <div class="card-body">
+                        <h3><a href="#">Lorem Ipsum</a></h3>
+                        <p class="text-muted card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <div class="card border-0"><a href="#"><img class="card-img-top scale-on-hover" src="assets/img/nature/image5.jpg" alt="Card Image"></a>
+                    <div class="card-body">
+                        <h3><a href="#">Lorem Ipsum</a></h3>
+                        <p class="text-muted card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        var form = document.getElementById('submit-form');
-        form.onsubmit = function() {
-            // Populate hidden form on submit
-            var content = document.querySelector('input[name=content]');
-            content.value = quill.root.innerHTML;
-        };
-    </script>
-</body>
-</html>
+<section class="portfolio-block call-to-action border-bottom">
+	<div class="container">
+		<div class="d-flex justify-content-center align-items-center content">
+			<h3>Want to write articles for this site?</h3><button class="btn btn-outline-primary btn-lg" type="button">Apply to become a Verified News journalist</button>
+		</div>
+	</div>
+</section>
