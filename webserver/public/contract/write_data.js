@@ -56,7 +56,7 @@ export async function createArticle(filecoinCID) {
 		console.log("Article created successfully:", tx);
 		return true;
 	} catch (error) {
-		console.error("Error creating article:", error);
+		console.log("Error creating article:", error);
 		return false;
 	}
 }

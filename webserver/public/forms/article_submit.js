@@ -37,9 +37,14 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = await response.json();
 
       if (data.cid) {
-        console.log(data.cid);
-        createArticle(data.cid);
-        window.location.href = '/success?data=' + encodeURIComponent(data.message);;
+		    console.log(`Using cid: ${data.cid}`);
+        const res = await createArticle(data.cid);
+        if (res){
+          window.location.href = '/success?data=' + encodeURIComponent(data.message);
+        }
+        else {
+          window.location.href = '/failure?data=' + encodeURIComponent(data.message);
+        }
       } else {
         window.location.href = '/failure?data=' + encodeURIComponent(data.message);
       }

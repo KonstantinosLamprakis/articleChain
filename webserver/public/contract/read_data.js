@@ -25,14 +25,14 @@ export async function getArticle(articleId) {
 		const formattedArticle = {
 			id: Number(article.id),
 			filecoinCID: article.filecoinCID,
-			journalist_id: article.journalist_id,
-			timestamp: Number(article.timestamp),
-			totalReviewScore: Number(article.totalReviewScore),
-			reviewsReceivedNbr: Number(article.reviewsReceivedNbr),
-			upVotes: Number(article.upVotes),
-			downVotes: Number(article.downVotes),
-			is_evaluated: article.is_evaluated,
-			is_deployed: article.is_deployed,
+			journalistId: article.journalistId,
+			timeStamp: Number(article.timeStamp),
+			reviewScore: Number(article.reviewScore),
+			reviewNumber: Number(article.reviewNumber),
+			upvotes: Number(article.upvotes),
+			downvotes: Number(article.downvotes),
+			isEvaluated: article.isEvaluated,
+			isPublished: article.isPublished,
 		};
 		console.log("Article found:", formattedArticle);
 		return formattedArticle;
@@ -46,15 +46,11 @@ export async function getCredibility(journalistAddress) {
 		await initPromise;
 		const web3 = new Web3(web3auth.provider);
 		const contract = new web3.eth.Contract(contractABI, contractAddress);
-		console.log(
-			`Getting credibility score for journalist ${journalistAddress}`
-		);
+		console.log(`Getting credibility score for journalist ${journalistAddress}`);
 		const credibility = await contract.methods
-			.get_credibility(journalistAddress)
+			.getCredibility(journalistAddress)
 			.call();
-		console.log(
-			`Credibility score for journalist ${journalistAddress}: ${credibility}`
-		);
+		console.log(`Credibility score for journalist ${journalistAddress}: ${credibility}`);
 		return credibility;
 	} catch (error) {
 		console.error("Error getting credibility score:", error);

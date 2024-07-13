@@ -2,7 +2,6 @@ import { getArticle } from "../contract/read_data.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        console.log(getArticle(1));
         const response = await fetch('indexArticle');
         const articles = await response.json();
         const articleContainer = document.getElementById('article-container');
