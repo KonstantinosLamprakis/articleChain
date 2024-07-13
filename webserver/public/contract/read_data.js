@@ -1,7 +1,8 @@
-import { web3auth, contractABI, contractAddress } from "./init.js";
+import { web3auth, contractABI, contractAddress, initPromise } from "./init.js";
 
-async function isJournalist(journalistAddress) {
+export async function isJournalist(journalistAddress) {
 	try {
+		await initPromise;
 		const web3 = new Web3(web3auth.provider);
 		const contract = new web3.eth.Contract(contractABI, contractAddress);
 		const isJournalist = await contract.methods
@@ -15,8 +16,9 @@ async function isJournalist(journalistAddress) {
 	}
 }
 
-async function getArticle(articleId) {
+export async function getArticle(articleId) {
 	try {
+		await initPromise;
 		const web3 = new Web3(web3auth.provider);
 		const contract = new web3.eth.Contract(contractABI, contractAddress);
 		const article = await contract.methods.getArticle(articleId).call();
@@ -40,8 +42,9 @@ async function getArticle(articleId) {
 	}
 }
 
-async function getCredibility(journalistAddress) {
+export async function getCredibility(journalistAddress) {
 	try {
+		await initPromise;
 		const web3 = new Web3(web3auth.provider);
 		const contract = new web3.eth.Contract(contractABI, contractAddress);
 		console.log(
@@ -59,8 +62,9 @@ async function getCredibility(journalistAddress) {
 	}
 }
 
-async function searchArticle(articleId) {
+export async function searchArticle(articleId) {
 	try {
+		await initPromise;
 		const web3 = new Web3(web3auth.provider);
 		const contract = new web3.eth.Contract(contractABI, contractAddress);
 		const article = await contract.methods.getArticle(articleId).call();

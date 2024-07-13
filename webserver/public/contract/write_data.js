@@ -1,6 +1,7 @@
-import { web3auth, contractABI, contractAddress } from "./init.js";
+import { web3auth, contractABI, contractAddress, initPromise } from "./init.js";
 
 export async function contract_op() {
+	await initPromise;
 	if (!web3auth.connected) {
 		console.log("Please connect your wallet first");
 		return;
@@ -21,6 +22,7 @@ export async function contract_op() {
 }
 
 export async function addJournalist(journalistAddress) {
+	await initPromise;
 	if (!web3auth.connected) {
 		console.log("Please connect your wallet first");
 		return false;
@@ -40,6 +42,7 @@ export async function addJournalist(journalistAddress) {
 }
 
 export async function createArticle(filecoinCID) {
+	await initPromise;
 	if (!web3auth.connected) {
 		console.log("Please connect your wallet first");
 		return false;
@@ -59,6 +62,7 @@ export async function createArticle(filecoinCID) {
 }
 
 export async function evaluateArticle(articleId, approve, comment) {
+	await initPromise;
 	if (!web3auth.connected) {
 		console.log("Please connect your wallet first");
 		return;
@@ -76,6 +80,7 @@ export async function evaluateArticle(articleId, approve, comment) {
 }
 
 export async function voteArticle(articleId, vote) {
+	await initPromise;
 	if (!web3auth.connected) {
 		console.log("Please connect your wallet first");
 		return;
