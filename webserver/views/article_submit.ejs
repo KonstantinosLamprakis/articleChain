@@ -6,7 +6,7 @@
         <form id="submit-article" class="shadow-lg" data-bs-theme="light" action="/submit-article" method="POST"
             enctype="multipart/form-data">
             <div class="mb-3">
-                <label class="form-label" for="headline">Article Headline</label>
+                <label class="form-label" for="headline">Article headline</label>
                 <input class="form-control item" type="text" id="headline" name="headline" required />
             </div>
             <div class="mb-3">
@@ -19,24 +19,20 @@
             </div>
             <input type="hidden" id="content" name="content" required />
             <div class="mb-3">
-                <label class="form-label" for="message">Message</label>
-                <div id="editor">
-                    <p>Hello World!</p>
-                    <p>Some initial <strong>bold</strong> text</p>
-                    <p><br /></p>
-                </div>
+                <label class="form-label" for="message">Article body</label>
+                <div id="editor"></div>
             </div>
             <div class="mb-3">
                 <label for="humanCheck" class="form-label" id="humanCheckLabel"></label>
-                <input type="number" class="form-control" id="humanCheck" name="humanCheck" required>
+                <input type="number" class="form-control" id="humanCheck" name="humanCheck" required />
                 <div class="invalid-feedback">
                     Please verify you are a human by answering correctly.
                 </div>
             </div>
-            <input type="hidden" id="humanCheckAnswer" name="humanCheckAnswer">
+            <input type="hidden" id="humanCheckAnswer" name="humanCheckAnswer" />
             <div class="mb-3 mt-4">
                 <button class="btn btn-primary btn-lg d-block w-100" type="submit">
-                    Submit Form
+                    Submit Article
                 </button>
             </div>
         </form>
