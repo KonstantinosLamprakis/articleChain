@@ -40,10 +40,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		    console.log(`Using cid: ${data.cid}`);
         const res = await createArticle(data.cid);
         if (res){
-          window.location.href = '/success?data=' + encodeURIComponent(data.message);
+          window.location.href = '/success?data=' + encodeURIComponent('Article created successfully!');
         }
         else {
-          window.location.href = '/failure?data=' + encodeURIComponent(data.message);
+          window.location.href = '/failure?data=' + encodeURIComponent('Error occured during article submission.');
         }
       } else {
         window.location.href = '/failure?data=' + encodeURIComponent(data.message);

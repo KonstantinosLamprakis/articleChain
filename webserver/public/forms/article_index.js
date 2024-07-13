@@ -1,5 +1,3 @@
-import { getArticle } from "../contract/read_data.js";
-
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch('indexArticle');
