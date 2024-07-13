@@ -1,3 +1,4 @@
+import { isJournalist, getCredibility } from '../contract/read_data.js';
 import { web3auth, initPromise } from "./init.js";
 
 (async function fetchInfo() {
@@ -24,6 +25,11 @@ import { web3auth, initPromise } from "./init.js";
 			} else {
 				console.log("Profile image not available.");
 			}
+			//journalist score
+			const journalistStatus = await isJournalist(address);
+			document.getElementById('journalist-status').textContent = journalistStatus ? "Yes" : "No";
+			const credibility = await getCredibility(address);
+			document.getElementById('credibility-score').textContent = 'Credibility: ${credibility}';
 		} else {
 			console.log("You are not connected yet.");
 		}

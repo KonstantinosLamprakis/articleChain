@@ -50,7 +50,7 @@ export async function getCredibility(journalistAddress) {
 			`Getting credibility score for journalist ${journalistAddress}`
 		);
 		const credibility = await contract.methods
-			.get_credibility(journalistAddress)
+			.getCredibility(journalistAddress)
 			.call();
 		console.log(
 			`Credibility score for journalist ${journalistAddress}: ${credibility}`
@@ -73,4 +73,3 @@ export async function searchArticle(articleId) {
 		console.error("Error fetching article:", error);
 	}
 }
-
