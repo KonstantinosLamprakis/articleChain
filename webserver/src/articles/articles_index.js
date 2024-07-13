@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { getArticle, searchArticle } = require('../contract/contract');
+const { getArticle, searchArticle, getAllArticles } = require('../contract/contract');
 
 async function fetchJsonFromHash(hash) {
   const test = await getArticle(1);
@@ -16,16 +16,19 @@ async function fetchJsonFromHash(hash) {
 async function aggregateJsonData() {
   const aggregatedData = [];
 
-  for (let i = 1; searchArticle(i); i++) {
-    const hash = getArticle(i).hash;
-    if (hash) {
-      const data = await fetchJsonFromHash(hash);
-      if (data) {
-        data.id = i;
-        aggregatedData.push(data);
-      }
-    }
-  }
+  const res = await getAllArticles();
+  console.log(res);
+  // for (let i = 1; await searchArticle(i); i++) {
+  //   const hash = await getArticle(i).filecoinCID;
+  //   if (hash) {
+  //     const data = await fetchJsonFromHash(hash);
+  //     if (data) {
+  //       data.id = i;
+  //       aggregatedData.push(data);
+        
+  //     }
+  //   }
+  // }
   return aggregatedData;
 }
 

@@ -83,11 +83,7 @@ async function searchArticle(articleId) {
 
 
 async function addJournalist(journalistAddress) {
-	await initPromise;
-	if (!web3.connected) {
-		console.log("Please connect your wallet first");
-		return false;
-	}
+
 	try {
 
 		const accounts = await web3.eth.getAccounts();
@@ -102,11 +98,7 @@ async function addJournalist(journalistAddress) {
 }
 
 async function createArticle(filecoinCID) {
-	await initPromise;
-	if (!web3.connected) {
-		console.log("Please connect your wallet first");
-		return false;
-	}
+
 	try {
 
 		const accounts = await web3.eth.getAccounts();
@@ -121,11 +113,7 @@ async function createArticle(filecoinCID) {
 }
 
 async function evaluateArticle(articleId, approve, comment) {
-	await initPromise;
-	if (!web3.connected) {
-		console.log("Please connect your wallet first");
-		return;
-	}
+
 	try {
 
 		const accounts = await web3.eth.getAccounts();
@@ -138,11 +126,7 @@ async function evaluateArticle(articleId, approve, comment) {
 }
 
 async function voteArticle(articleId, vote) {
-	await initPromise;
-	if (!web3.connected) {
-		console.log("Please connect your wallet first");
-		return;
-	}
+
 	try {
 
 		const accounts = await web3.eth.getAccounts();
@@ -154,6 +138,15 @@ async function voteArticle(articleId, vote) {
 	}
 }
 
+async function getAllArticles() {
+	try {
+		const tx = await contract.methods.getAllArticles().call();
+		console.log("Get all articles: ", tx);
+	} catch (error) {
+		console.error("Error, get all articles failed", error);
+	}
+}
+
 module.exports = {
     isJournalist,
     getArticle,
@@ -162,7 +155,8 @@ module.exports = {
     addJournalist,
     createArticle,
     evaluateArticle,
-    voteArticle
+    voteArticle,
+	getAllArticles
 };
 
 // import them like that
