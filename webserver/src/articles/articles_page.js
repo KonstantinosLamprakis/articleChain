@@ -1,26 +1,27 @@
 const { fetchJsonFromHash } = require('./articles_index');
+const fs = require('fs').promises;
+const path = require('path');
 
-function fetchJSONFile() {
-    return fetch('articles.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
+async function fetchJSONFile() {
+    try {
+        const filePath = 'articles.json';
+        const data = await fs.readFile(filePath, 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        console.error('Error reading JSON file:', error);
+        throw new Error('Failed to read JSON file');
+    }
 }
 
+
 function getHashById(id, jsonData) {
-    const found = jsonData.find(item => item.id === id);
+    const found = jsonData[id - 1];
     return found ? found.Hash : null;
 }
 
 
-async function pageArticle(id) {
-
+const pageArticle = async (req, res) => {
+    const { id } = req.query;
     console.log('Requested article id:', id);
     
     if (!id) {
@@ -44,13 +45,13 @@ async function pageArticle(id) {
         }
 
         res.render('layout', {
-            content: 'article_template',
+            content: 'article',
             article: articleWithContent
         });
     } catch (error) {
         console.error('Error fetching article:', error);
         res.status(500).send('Error fetching article');
     }
-}
+};
 
 module.exports = { pageArticle };
