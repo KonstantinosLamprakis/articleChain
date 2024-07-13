@@ -1,4 +1,5 @@
 import { generateHumanCheck } from "./humancheck.js";
+import { createArticle } from "../contract/write_data.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const quill = new Quill("#editor", {
@@ -37,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (data.cid) {
         console.log(data.cid);
+        createArticle(data.cid);
         window.location.href = '/success?data=' + encodeURIComponent(data.message);;
       } else {
         window.location.href = '/failure?data=' + encodeURIComponent(data.message);
