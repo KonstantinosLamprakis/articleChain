@@ -1,10 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const { submitContactForm } = require('../controllers/contactController');
 const { submitArticle } = require('../filecoin/filecoin');
+const uploadDir = path.join(__dirname, '../../uploads');
 
-const storage = multer.memoryStorage();
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadDir);
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
 const upload = multer({ storage: storage });
 
 router.get('/', (req, res) => {
@@ -13,6 +28,10 @@ router.get('/', (req, res) => {
 
 router.get('/contact', (req, res) => {
     res.render('layout', { content: 'contact_submit' });
+});
+
+router.get('/login', (req, res) => {
+    res.render('layout', { content: 'web3' });
 });
 
 router.get('/success', (req, res) => {
@@ -25,10 +44,6 @@ router.get('/failure', (req, res) => {
 
 router.get('/submit', (req, res) => {
     res.render('layout', { content: 'article_submit' });
-});
-
-router.get('/profile', (req, res) => {
-    res.render('layout', { content: 'profile' });
 });
 
 router.post('/submit-article', upload.single('image'), submitArticle);
