@@ -16,11 +16,11 @@ router.get('/contact', (req, res) => {
 });
 
 router.get('/success', (req, res) => {
-    res.render('layout', { content: 'success' });
+    res.render('layout', { content: 'success', message: 'succesfull' });
 });
 
 router.get('/failure', (req, res) => {
-    res.render('layout', { content: 'failure' });
+    res.render('layout', { content: 'failure', message: 'failed' });
 });
 
 router.get('/submit', (req, res) => {
