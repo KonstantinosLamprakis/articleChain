@@ -1,26 +1,8 @@
 const { fetchJsonFromHash } = require('./articles_index');
+const { getArticle } = require('../contract/contract');
 
-function fetchJSONFile() {
-    return fetch('articles.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-}
-
-function getHashById(id, jsonData) {
-    const found = jsonData.find(item => item.id === id);
-    return found ? found.Hash : null;
-}
-
-
-async function pageArticle(id) {
-
+const pageArticle = async (req, res) => {
+    const { id } = req.query;
     console.log('Requested article id:', id);
     
     if (!id) {
@@ -28,15 +10,15 @@ async function pageArticle(id) {
     }
 
     try {
-        const jsonData = await fetchJSONFile();
-        const hash = getHashById(id, jsonData);
+        article = await getArticle(id);
+        hash = article.filecoinCID;
 
         if (!hash) {
             console.error('Article hash not found for id:', id);
             return res.status(404).send('Article not found');
         }
 
-        const articleWithContent = await fetchJsonFromHash(hash); // Fetch article content based on hash
+        const articleWithContent = await fetchJsonFromHash(hash);
 
         if (!articleWithContent) {
             console.error('Article is undefined or null');
@@ -44,13 +26,13 @@ async function pageArticle(id) {
         }
 
         res.render('layout', {
-            content: 'article_template',
+            content: 'article',
             article: articleWithContent
         });
     } catch (error) {
         console.error('Error fetching article:', error);
         res.status(500).send('Error fetching article');
     }
-}
+};
 
 module.exports = { pageArticle };
