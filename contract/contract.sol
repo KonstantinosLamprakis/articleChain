@@ -3,49 +3,46 @@ pragma solidity ^0.8.0;
 
 contract EthArticleBlockchain {
     struct Voter {
-        bool	hasVoted;
-        bool 	vote;
-        address	userWalletId;
+        bool    hasVoted;
+        bool    vote;
+        address userWalletId;
     }
 
     struct Evaluator {
-        bool	hasEvaluated;
-        bool	evaluationValue;
-        address	userWalletId;
-        string	comments;
+        bool    hasEvaluated;
+        bool    evaluationValue;
+        address userWalletId;
+        string  comments;
     }
 
     struct Article {
-        uint	id;
-        string	filecoinCID;
-        address	journalistId;
-        uint	timeStamp;
-        int		upvotes;
-        int		downvotes;
-        int		reviewScore;
-        uint	reviewNumber;
-        bool	isPublished;
-        bool	isEvaluated;
+        uint    id;
+        string  filecoinCID;
+        address journalistId;
+        uint    timeStamp;
+        int     upvotes;
+        int     downvotes;
+        int     reviewScore;
+        uint    reviewNumber;
+        bool    isPublished;
+        bool    isEvaluated;
         mapping(address => Voter) voters;
         mapping(address => Evaluator) reviewers;
         address[] reviewersAddresses;
     }
 
-	struct All_articles {
-		uint	id;
-		string	filecoinCID;
-		bool	isPublished;
-		bool	isEvaluated;
-	}
+    struct AllArticles {
+        uint    id;
+        string  filecoinCID;
+        bool    isPublished;
+        bool    isEvaluated;
+    }
 
-	mapping(uint => All_articles) public allArticles;
-
-    address[5] public admins = [
-        address(0xE72234a7A2289ad7B1C1c16004668e3E2D3F876d),
-        address(0x76776371ac9aB86C55E1106FBe04576C92a0070E),
-        address(0x7eb5c634A059C2FaA7A39ADFaADce749A045686D),
-        address(0xC2FA1b00AB2d3Fd715EfC401fd4da35ba96Da7A2),
-        address(0x22a26ABad444aB23fdd84a323d3121442860a7F7)
+    address[4] public admins = [
+	address(0x9F1Ce4B3392f849fA142C0b35932b140B0F48663),
+	address(0x7eb5c634A059C2FaA7A39ADFaADce749A045686D),
+	address(0x1c6af370b04d2979a92DFa4614059210Af411914),
+	address(0x45096426d5CEb2bC2D9e8FB73f36F91Bf5A877CB),
     ];
 
     uint public articleCount;
@@ -53,7 +50,9 @@ contract EthArticleBlockchain {
     int private constant ownerInfluence = 5;
     int private constant reviewerInfluence = 2;
 
-    mapping(uint256 => Article) public articles;
+    Article[] public articles;
+    AllArticles[] public allArticles;
+
     mapping(address => bool) public journalistGroup;
     mapping(address => uint) public credibilityScores;
 
@@ -66,7 +65,7 @@ contract EthArticleBlockchain {
     event ArticleDenied(uint256 indexed articleId, int totalReviewScore, string comments);
 
     modifier notOwner(uint256 articleId) {
-        require(msg.sender != articles[articleId].journalistId, "Owner cannot vote");
+        require(msg.sender != articles[articleId - 1].journalistId, "Owner cannot vote");
         _;
     }
 
@@ -107,7 +106,8 @@ contract EthArticleBlockchain {
         uint credibilityOfOwner = credibilityScores[msg.sender];
         articleCount++;
 
-        Article storage newArticle = articles[articleCount];
+        articles.push();
+        Article storage newArticle = articles[articles.length - 1];
         newArticle.id = articleCount;
         newArticle.filecoinCID = _filecoinCID;
         newArticle.journalistId = msg.sender;
@@ -119,40 +119,41 @@ contract EthArticleBlockchain {
         newArticle.isEvaluated = false;
         newArticle.isPublished = false;
 
-        allArticles[articleCount] = All_articles({
+        allArticles.push(AllArticles({
             id: articleCount,
             filecoinCID: _filecoinCID,
             isPublished: false,
             isEvaluated: false
-        });
+        }));
 
         emit ArticleCreated(articleCount, _filecoinCID, msg.sender);
     }
 
     function evaluateArticle(uint articleId, bool approve, string memory comment) public onlyJournalist notOwner(articleId) {
-        require(!articles[articleId].reviewers[msg.sender].hasEvaluated, "You have already reviewed");
-        require(!articles[articleId].isEvaluated, "Article already evaluated");
+        Article storage article = articles[articleId - 1];
+        require(!article.reviewers[msg.sender].hasEvaluated, "You have already reviewed");
+        require(!article.isEvaluated, "Article already evaluated");
 
-        articles[articleId].reviewers[msg.sender] = Evaluator({
+        article.reviewers[msg.sender] = Evaluator({
             hasEvaluated: true,
             evaluationValue: approve,
             userWalletId: msg.sender,
             comments: comment
         });
 
-        articles[articleId].reviewersAddresses.push(msg.sender);
-        articles[articleId].reviewNumber += 1;
+        article.reviewersAddresses.push(msg.sender);
+        article.reviewNumber += 1;
 
         if (approve) {
-            articles[articleId].reviewScore += int(credibilityScores[msg.sender]);
-            if (articles[articleId].reviewScore >= int(targetScore)) {
-                articles[articleId].isEvaluated = true;
-                allArticles[articleId].isEvaluated = true;
+            article.reviewScore += int(credibilityScores[msg.sender]);
+            if (article.reviewScore >= int(targetScore)) {
+                article.isEvaluated = true;
+                allArticles[articleId - 1].isEvaluated = true;
                 deployArticle(articleId);
             }
         } else {
-            articles[articleId].isEvaluated = true;
-            allArticles[articleId].isEvaluated = true;
+            article.isEvaluated = true;
+            allArticles[articleId - 1].isEvaluated = true;
             denyArticle(articleId);
         }
 
@@ -160,21 +161,22 @@ contract EthArticleBlockchain {
     }
 
     function voteArticle(uint articleId, bool vote) public onlyJournalist notOwner(articleId) {
-        require(!articles[articleId].voters[msg.sender].hasVoted, "You have already voted");
-        require(!articles[articleId].reviewers[msg.sender].hasEvaluated, "Reviewers cannot vote");
-        require(articles[articleId].isPublished, "Article not yet evaluated or is rejected");
+        Article storage article = articles[articleId - 1];
+        require(!article.voters[msg.sender].hasVoted, "You have already voted");
+        require(!article.reviewers[msg.sender].hasEvaluated, "Reviewers cannot vote");
+        require(article.isPublished, "Article not yet evaluated or is rejected");
 
-        articles[articleId].voters[msg.sender] = Voter({
+        article.voters[msg.sender] = Voter({
             hasVoted: true,
             vote: vote,
             userWalletId: msg.sender
         });
 
         if (vote) {
-            articles[articleId].upvotes += 1;
+            article.upvotes += 1;
             updateCredibility(articleId, ownerInfluence, reviewerInfluence);
         } else {
-            articles[articleId].downvotes += 1;
+            article.downvotes += 1;
             updateCredibility(articleId, -ownerInfluence, -reviewerInfluence);
         }
 
@@ -182,19 +184,21 @@ contract EthArticleBlockchain {
     }
 
     function deployArticle(uint articleId) internal {
-        articles[articleId].isPublished = true;
-        allArticles[articleId].isPublished = true;
-        emit ArticleDeployed(articleId, articles[articleId].reviewScore);
+        Article storage article = articles[articleId - 1];
+        article.isPublished = true;
+        allArticles[articleId - 1].isPublished = true;
+        emit ArticleDeployed(articleId, article.reviewScore);
     }
 
     function denyArticle(uint articleId) internal {
+        Article storage article = articles[articleId - 1];
         string memory comments = gatherComments(articleId);
-        emit ArticleDenied(articleId, articles[articleId].reviewScore, comments);
+        emit ArticleDenied(articleId, article.reviewScore, comments);
     }
 
     function gatherComments(uint articleId) internal view returns (string memory) {
         string memory allComments = "";
-        Article storage article = articles[articleId];
+        Article storage article = articles[articleId - 1];
         for (uint i = 0; i < article.reviewNumber; i++) {
             address reviewerAddress = article.reviewersAddresses[i];
             if (article.reviewers[reviewerAddress].hasEvaluated) {
@@ -210,25 +214,22 @@ contract EthArticleBlockchain {
         address journalistId, 
         uint256 timeStamp,
         int reviewScore,
-        int reviewNumber,
+        uint reviewNumber,
         int upvotes,
         int downvotes,
         bool isEvaluated,
         bool isPublished
     ) {
         require(articleId > 0 && articleId <= articleCount, "Invalid article ID");
-        Article storage article = articles[articleId];
+        Article storage article = articles[articleId - 1];
         
-        // Create a memory copy of the filecoinCID
-        string memory filecoinCIDMemory = article.filecoinCID;
-
         return (
             article.id, 
-            filecoinCIDMemory, 
+            article.filecoinCID, 
             article.journalistId, 
             article.timeStamp, 
             article.reviewScore, 
-            int(article.reviewNumber), 
+            article.reviewNumber, 
             article.upvotes, 
             article.downvotes,
             article.isEvaluated,
@@ -237,7 +238,7 @@ contract EthArticleBlockchain {
     }
 
     function updateCredibility(uint articleId, int ownerInfluenceValue, int reviewerInfluenceValue) internal {
-        Article storage article = articles[articleId];
+        Article storage article = articles[articleId - 1];
         address owner = article.journalistId;
         credibilityScores[owner] = uint(int(credibilityScores[owner]) + ownerInfluenceValue);
         credibilityScores[owner] = credibilityScores[owner] > 100 ? 100 : credibilityScores[owner];
@@ -258,11 +259,7 @@ contract EthArticleBlockchain {
         return credibilityScores[journalistId];
     }
 
-    function getAllArticles() public view returns (All_articles[] memory) {
-        All_articles[] memory allArticlesArray = new All_articles[](articleCount);
-        for (uint i = 1; i <= articleCount; i++) {
-            allArticlesArray[i - 1] = allArticles[i];
-        }
-        return allArticlesArray;
+    function getAllArticles() public view returns (AllArticles[] memory) {
+        return allArticles;
     }
 }
