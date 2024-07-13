@@ -43,15 +43,24 @@ const submitArticle = async (req, res) => {
     const image = req.file;
 
     if (!image) {
-        res.render('layout', { content: 'failure', message: 'Thumbnail image is mandatory' });
+        res.json({ cid: null, message: 'Thumbnail image is mandatory' });
+        return;
+    }
+
+    if (!short_text) {
+        res.json({ cid: null, message: 'Short text is mandatory' });
+        return;
+    }
+
+    if (!content || content.length < 20) {
+        res.json({ cid: null, message: 'Content is mandatory' });
         return;
     }
 
     if (parseInt(humanCheck) !== parseInt(humanCheckAnswer)) {
-        res.render('layout', { content: 'failure', message: 'You need to verify that you are a human by doing the math. Try again.' });
+        res.json({ cid: null, message: 'You need to verify that you are a human by doing the math. Try again.' });
         return;
     }
-
 
     const { filename, jsonContent } = prepareArticleData(headline, image, short_text, content);
 
@@ -62,12 +71,12 @@ const submitArticle = async (req, res) => {
         if (file_check)
             res.json({ cid: file_check, message: 'Article submited successfully.' });
         else
-            res.render('layout', { content: 'failure', message: 'Problem with the uploading to the filecoin!' });
+            res.json({ cid: null, message: 'Problem with the uploading to the filecoin!' });
 
         await deleteFile(filePath);
     } catch (err) {
         console.error('Error writing JSON file:', err);
-        res.render('layout', { content: 'failure', message: 'Error writing JSON file!' });
+        res.json({ cid: null, message: 'Error writing JSON file!' });
     }
 };
 
