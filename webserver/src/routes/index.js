@@ -15,6 +15,14 @@ router.get('/contact', (req, res) => {
     res.render('layout', { content: 'contact_submit' });
 });
 
+router.get('/success', (req, res) => {
+    res.render('layout', { content: 'success' });
+});
+
+router.get('/failure', (req, res) => {
+    res.render('layout', { content: 'failure' });
+});
+
 router.get('/submit', (req, res) => {
     res.render('layout', { content: 'article_submit' });
 });

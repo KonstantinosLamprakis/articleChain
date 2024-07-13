@@ -26,7 +26,7 @@ async function uploadFile(path) {
 
         existingData.push(dataToAppend);
         fs.writeFileSync('articles.json', JSON.stringify(existingData, null, 2));
-        return (true);
+        return (dataToAppend.Hash);
     } catch (error) {
         console.error('Error uploading file:', error);
         return (false);

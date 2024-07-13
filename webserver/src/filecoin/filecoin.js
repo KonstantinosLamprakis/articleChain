@@ -30,7 +30,6 @@ const deleteFile = async (filePath) => {
     const absolutePath = path.resolve(filePath);
     try {
         await fs.unlink(absolutePath);
-        console.log('File deleted successfully.');
     } catch (err) {
         console.error('Error deleting file:', err);
     }
@@ -43,26 +42,32 @@ const submitArticle = async (req, res) => {
     const { headline, short_text, content, humanCheck, humanCheckAnswer } = req.body;
     const image = req.file;
 
-    if (!headline || !short_text || !content || !humanCheck || !humanCheckAnswer) {
-        return res.status(400).send('All fields are required.');
+    if (!image) {
+        res.render('layout', { content: 'failure', message: 'Thumbnail image is mandatory' });
+        return;
     }
 
-    if (humanCheck !== humanCheckAnswer) {
-        return res.status(400).send('Human verification failed.');
+    if (parseInt(humanCheck) !== parseInt(humanCheckAnswer)) {
+        res.render('layout', { content: 'failure', message: 'You need to verify that you are a human by doing the math. Try again.' });
+        return;
     }
+
 
     const { filename, jsonContent } = prepareArticleData(headline, image, short_text, content);
 
     try {
         const filePath = path.join(__dirname, filename);
         await fs.writeFile(filePath, jsonContent);
-        await uploadFile(filePath);
-        res.send('Form submitted successfully!');
-        
+        const file_check = await uploadFile(filePath);
+        if (file_check)
+            res.json({ cid: file_check, message: 'Article submited successfully.' });
+        else
+            res.render('layout', { content: 'failure', message: 'Problem with the uploading to the filecoin!' });
+
         await deleteFile(filePath);
     } catch (err) {
         console.error('Error writing JSON file:', err);
-        res.status(500).send('Internal server error');
+        res.render('layout', { content: 'failure', message: 'Error writing JSON file!' });
     }
 };
 
