@@ -46,6 +46,10 @@ router.get('/submit', (req, res) => {
     res.render('layout', { content: 'article_submit' });
 });
 
+router.get('/profile', (req, res) => {
+    res.render('layout', { content: 'profile' });
+});
+
 router.post('/submit-article', upload.single('image'), submitArticle);
 router.post('/contact-submit', upload.array('files'), submitContactForm);
 
