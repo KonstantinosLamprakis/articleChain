@@ -4,6 +4,9 @@ const fs = require('fs');
 async function uploadFile(path) {
     const apiKey = process.env.API_LIGHTHOUSE;
     try {
+        if (!apiKey) {
+            throw new Error('API key not found. Make sure to set API_LIGHTHOUSE in your .env file.');
+        }
         const uploadResponse = await lighthouse.upload(
             path,
             apiKey
@@ -22,9 +25,11 @@ async function uploadFile(path) {
         }
 
         existingData.push(dataToAppend);
-        fs.writeFileSync('uploadResponse.json', JSON.stringify(existingData, null, 2));
+        fs.writeFileSync('articles.json', JSON.stringify(existingData, null, 2));
+        return (true);
     } catch (error) {
         console.error('Error uploading file:', error);
+        return (false);
     }
 }
 
