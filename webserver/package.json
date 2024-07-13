@@ -1,5 +1,5 @@
 {
-  "name": "webserver",
+  "name": "webserver-vanillajs-modal-quick-start",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -16,6 +16,11 @@
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.14"
+    "nodemailer": "^6.9.14",
+    "http-server": "^14.1.1"
+  },
+  "devDependencies": {
+    "zlib-browserify": "^0.0.3"
   }
 }
+
