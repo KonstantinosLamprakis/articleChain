@@ -6,12 +6,12 @@ export let initPromise = null;
   $(".btn-logged-in").hide();
   $("#sign-tx").hide();
 
-  const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // public ID
-  // const clientId = "BKKvD4b4JM8ltnzkKZj37FuIaxu0oaaeJyv-hpN5vceuHrejJdSL67rGkv5qgiacQ2g7-Lqmeq-AMn7EKzBg-G0"; // our ID
+  // const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // public ID
+  const clientId = "BKKvD4b4JM8ltnzkKZj37FuIaxu0oaaeJyv-hpN5vceuHrejJdSL67rGkv5qgiacQ2g7-Lqmeq-AMn7EKzBg-G0"; // our ID
 
   const chainConfig = {
     chainNamespace: "eip155",
-    chainId: "0x1", // Please use 0x1 for Mainnet
+    chainId: "0x1",
     rpcTarget: "https://rpc.ankr.com/eth",
     displayName: "Ethereum Mainnet",
     blockExplorerUrl: "https://etherscan.io/",
@@ -24,7 +24,17 @@ export let initPromise = null;
   web3auth = new window.Modal.Web3Auth({
     clientId,
     privateKeyProvider,
-    web3AuthNetwork: "sapphire_mainnet",
+    web3AuthNetwork: "sapphire_devnet",
+    uiConfig: {
+      appName: "verified news",
+      mode: "dark", // light, dark or auto
+      loginMethodsOrder: ["google", "twitter"],
+      logoLight: "https://web3auth.io/images/web3auth-logo.svg",
+      logoDark: "https://web3auth.io/images/web3auth-logo---Dark.svg",
+      defaultLanguage: "en", // en, de, ja, ko, zh, es, fr, pt, nl, tr
+      loginGridCol: 3,
+      primaryButton: "socialLogin", // "externalLogin" | "socialLogin" | "emailLogin"
+    },
   });
 
   // Add wallet service plugin

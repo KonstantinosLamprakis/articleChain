@@ -4,8 +4,6 @@ const submitArticle = (req, res) => {
   const { headline, short_text, content, humanCheck, humanCheckAnswer } = req.body;
   const image = req.file;
 
-  console.log('Form data:', { headline, short_text, content, image, humanCheckAnswer, humanCheck });
-
   if (!image) {
     res.render('layout', { content: 'failure', message: 'Thumbnail image is mandatory' });
     return;
@@ -22,6 +20,34 @@ const submitArticle = (req, res) => {
       res.status(500).send('Error deleting image file.');
       return;
     }
+    const sanitizeTitle = headline.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+
+    const date = new Date().toISOString().slice(0, 10);
+
+    const filename = `${sanitizeTitle}_${date}.json`;
+    const formData = {
+        headline,
+        image: {
+            originalname: image.originalname,
+            mimetype: image.mimetype,
+            size: image.size,
+            buffer: image.buffer.toString('base64')
+        },
+        short_text,
+        content
+    };
+
+    const jsonContent = JSON.stringify(formData, null, 2);
+
+
+    fs.writeFile(filename, jsonContent, (err) => {
+        if (err) {
+            console.error('Error writing JSON file:', err);
+            return res.status(500).send('Internal server error');
+        }
+    });
+
+
   res.render('layout', { content: 'success', message: 'Article submited successfully.' });
   });
 };
