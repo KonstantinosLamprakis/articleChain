@@ -42,6 +42,10 @@ router.get('/contact', (req, res) => {
     res.render('layout', { content: 'contact_submit' });
 });
 
+router.get('/login', (req, res) => {
+    res.render('layout', { content: 'web3' });
+});
+
 router.get('/article', (req, res) => {
     res.render('layout', { content: 'article_submit' });
 });
