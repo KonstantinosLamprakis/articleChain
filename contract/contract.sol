@@ -3,45 +3,55 @@ pragma solidity ^0.8.0;
 
 contract EthArticleBlockchain {
     struct Voter {
-        bool hasVoted;
-        bool vote;
-        address userWalletId;
+        bool	hasVoted;
+        bool 	vote;
+        address	userWalletId;
     }
 
     struct Evaluator {
-        bool hasEvaluated;
-        bool evaluationValue;
-        address userWalletId;
-        string comments;
+        bool	hasEvaluated;
+        bool	evaluationValue;
+        address	userWalletId;
+        string	comments;
     }
 
     struct Article {
-        uint id;
-        string filecoinCID;
-        address journalistId;
-        uint timeStamp;
-        int upvotes;
-        int downvotes;
-        int reviewScore;
-        uint reviewNumber;
-        bool isDeployed;
-        bool isEvaluated;
+        uint	id;
+        string	filecoinCID;
+        address	journalistId;
+        uint	timeStamp;
+        int		upvotes;
+        int		downvotes;
+        int		reviewScore;
+        uint	reviewNumber;
+        bool	isPublished;
+        bool	isEvaluated;
         mapping(address => Voter) voters;
         mapping(address => Evaluator) reviewers;
         address[] reviewersAddresses;
     }
 
-    address[3] public admins = [
-        address(0x4Fe0afF54C941BCa79b61B54C27a3a9D8509087D),
-        address(0x4358209Cc8535508A98ac0A9970FeAE8ed96A801),
-        address(0x7eb5c634A059C2FaA7A39ADFaADce749A045686D)
+	struct All_articles {
+		uint	id;
+		string	filecoinCID;
+		bool	isPublished;
+		bool	isEvaluated;
+	}
+
+	mapping(uint => All_articles) public allArticles;
+
+    address[5] public admins = [
+        address(0xE72234a7A2289ad7B1C1c16004668e3E2D3F876d),
+        address(0x76776371ac9aB86C55E1106FBe04576C92a0070E),
+        address(0x7eb5c634A059C2FaA7A39ADFaADce749A045686D),
+        address(0xC2FA1b00AB2d3Fd715EfC401fd4da35ba96Da7A2),
+        address(0x22a26ABad444aB23fdd84a323d3121442860a7F7)
     ];
 
     uint public articleCount;
-    uint public targetScore = 30000; // Target score for evaluation
-    uint private constant factor = 2;
-    int private constant ownerInfluence = 10 * int(factor);
-    int private constant reviewerInfluence = 5 * int(factor);
+    uint public targetScore = 300;
+    int private constant ownerInfluence = 5;
+    int private constant reviewerInfluence = 2;
 
     mapping(uint256 => Article) public articles;
     mapping(address => bool) public journalistGroup;
@@ -83,7 +93,7 @@ contract EthArticleBlockchain {
         require(journalist != address(0), "Invalid address");
         require(!journalistGroup[journalist], "Journalist already added");
         journalistGroup[journalist] = true;
-        credibilityScores[journalist] = 10000;
+        credibilityScores[journalist] = 80;
         emit JournalistAdded(journalist);
     }
 
@@ -107,7 +117,14 @@ contract EthArticleBlockchain {
         newArticle.upvotes = 0;
         newArticle.downvotes = 0;
         newArticle.isEvaluated = false;
-        newArticle.isDeployed = false;
+        newArticle.isPublished = false;
+
+        allArticles[articleCount] = All_articles({
+            id: articleCount,
+            filecoinCID: _filecoinCID,
+            isPublished: false,
+            isEvaluated: false
+        });
 
         emit ArticleCreated(articleCount, _filecoinCID, msg.sender);
     }
@@ -130,10 +147,12 @@ contract EthArticleBlockchain {
             articles[articleId].reviewScore += int(credibilityScores[msg.sender]);
             if (articles[articleId].reviewScore >= int(targetScore)) {
                 articles[articleId].isEvaluated = true;
+                allArticles[articleId].isEvaluated = true;
                 deployArticle(articleId);
             }
         } else {
             articles[articleId].isEvaluated = true;
+            allArticles[articleId].isEvaluated = true;
             denyArticle(articleId);
         }
 
@@ -143,7 +162,7 @@ contract EthArticleBlockchain {
     function voteArticle(uint articleId, bool vote) public onlyJournalist notOwner(articleId) {
         require(!articles[articleId].voters[msg.sender].hasVoted, "You have already voted");
         require(!articles[articleId].reviewers[msg.sender].hasEvaluated, "Reviewers cannot vote");
-        require(articles[articleId].isDeployed, "Article not yet evaluated or is rejected");
+        require(articles[articleId].isPublished, "Article not yet evaluated or is rejected");
 
         articles[articleId].voters[msg.sender] = Voter({
             hasVoted: true,
@@ -163,7 +182,8 @@ contract EthArticleBlockchain {
     }
 
     function deployArticle(uint articleId) internal {
-        articles[articleId].isDeployed = true;
+        articles[articleId].isPublished = true;
+        allArticles[articleId].isPublished = true;
         emit ArticleDeployed(articleId, articles[articleId].reviewScore);
     }
 
@@ -194,7 +214,7 @@ contract EthArticleBlockchain {
         int upvotes,
         int downvotes,
         bool isEvaluated,
-        bool isDeployed
+        bool isPublished
     ) {
         require(articleId > 0 && articleId <= articleCount, "Invalid article ID");
         Article storage article = articles[articleId];
@@ -212,7 +232,7 @@ contract EthArticleBlockchain {
             article.upvotes, 
             article.downvotes,
             article.isEvaluated,
-            article.isDeployed
+            article.isPublished
         );
     }
 
@@ -220,14 +240,14 @@ contract EthArticleBlockchain {
         Article storage article = articles[articleId];
         address owner = article.journalistId;
         credibilityScores[owner] = uint(int(credibilityScores[owner]) + ownerInfluenceValue);
-        credibilityScores[owner] = credibilityScores[owner] > 10000 ? 10000 : credibilityScores[owner];
+        credibilityScores[owner] = credibilityScores[owner] > 100 ? 100 : credibilityScores[owner];
         credibilityScores[owner] = credibilityScores[owner] < 0 ? 0 : credibilityScores[owner];
 
         for (uint i = 0; i < article.reviewersAddresses.length; i++) {
             address reviewerAddress = article.reviewersAddresses[i];
             if (article.reviewers[reviewerAddress].hasEvaluated) {
                 credibilityScores[reviewerAddress] = uint(int(credibilityScores[reviewerAddress]) + reviewerInfluenceValue);
-                credibilityScores[reviewerAddress] = credibilityScores[reviewerAddress] > 10000 ? 10000 : credibilityScores[reviewerAddress];
+                credibilityScores[reviewerAddress] = credibilityScores[reviewerAddress] > 100 ? 100 : credibilityScores[reviewerAddress];
                 credibilityScores[reviewerAddress] = credibilityScores[reviewerAddress] < 0 ? 0 : credibilityScores[reviewerAddress];
             }
         }
@@ -236,5 +256,13 @@ contract EthArticleBlockchain {
     function getCredibility(address journalistId) public view returns (uint) {
         require(journalistGroup[journalistId], "Journalist not found");
         return credibilityScores[journalistId];
+    }
+
+    function getAllArticles() public view returns (All_articles[] memory) {
+        All_articles[] memory allArticlesArray = new All_articles[](articleCount);
+        for (uint i = 1; i <= articleCount; i++) {
+            allArticlesArray[i - 1] = allArticles[i];
+        }
+        return allArticlesArray;
     }
 }
