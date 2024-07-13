@@ -4,7 +4,11 @@ const fs = require('fs');
 
 const articles = JSON.parse(fs.readFileSync('articles.json', 'utf8'));
 
+const { getArticle } = require('../contract/contract');
+
 async function fetchJsonFromHash(hash) {
+  const test = await getArticle(1);
+  console.log(test);
   try {
     const response = await axios.get(`https://gateway.lighthouse.storage/ipfs/${hash}`);
     return response.data;
@@ -39,6 +43,5 @@ const indexArticle = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch and aggregate data' });
   }
 };
-
 
 module.exports = { indexArticle , fetchJsonFromHash };

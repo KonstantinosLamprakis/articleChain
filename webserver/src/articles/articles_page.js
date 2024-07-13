@@ -13,7 +13,6 @@ async function fetchJSONFile() {
     }
 }
 
-
 function getHashById(id, jsonData) {
     const found = jsonData[id - 1];
     return found ? found.Hash : null;

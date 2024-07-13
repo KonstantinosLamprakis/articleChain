@@ -20,9 +20,6 @@ const contract = new web3.eth.Contract(abi, contractAddress);
 
 async function isJournalist(journalistAddress) {
 	try {
-		await initPromise;
-		const web3 = new Web3(web3auth.provider);
-		const contract = new web3.eth.Contract(contractABI, contractAddress);
 		const isJournalist = await contract.methods
 			.journalistGroup(journalistAddress)
 			.call();
@@ -36,9 +33,6 @@ async function isJournalist(journalistAddress) {
 
 async function getArticle(articleId) {
 	try {
-		await initPromise;
-		const web3 = new Web3(web3auth.provider);
-		const contract = new web3.eth.Contract(contractABI, contractAddress);
 		const article = await contract.methods.getArticle(articleId).call();
 		const formattedArticle = {
 			id: Number(article.id),
@@ -61,9 +55,7 @@ async function getArticle(articleId) {
 
 async function getCredibility(journalistAddress) {
 	try {
-		await initPromise;
-		const web3 = new Web3(web3auth.provider);
-		const contract = new web3.eth.Contract(contractABI, contractAddress);
+
 		console.log(`Getting credibility score for journalist ${journalistAddress}`);
 		const credibility = await contract.methods
 			.getCredibility(journalistAddress)
@@ -77,9 +69,7 @@ async function getCredibility(journalistAddress) {
 
 async function searchArticle(articleId) {
 	try {
-		await initPromise;
-		const web3 = new Web3(web3auth.provider);
-		const contract = new web3.eth.Contract(contractABI, contractAddress);
+
 		const article = await contract.methods.getArticle(articleId).call();
 		console.log("Article found:", article);
 		return article;
@@ -93,13 +83,12 @@ async function searchArticle(articleId) {
 
 async function addJournalist(journalistAddress) {
 	await initPromise;
-	if (!web3auth.connected) {
+	if (!web3.connected) {
 		console.log("Please connect your wallet first");
 		return false;
 	}
 	try {
-		const web3 = new Web3(web3auth.provider);
-		const contract = new web3.eth.Contract(contractABI, contractAddress);
+
 		const accounts = await web3.eth.getAccounts();
 		console.log(`Using account: ${accounts[0]}`);
 		const tx = await contract.methods.addJournalist(journalistAddress).send({ from: accounts[0] });
@@ -113,13 +102,12 @@ async function addJournalist(journalistAddress) {
 
 async function createArticle(filecoinCID) {
 	await initPromise;
-	if (!web3auth.connected) {
+	if (!web3.connected) {
 		console.log("Please connect your wallet first");
 		return false;
 	}
 	try {
-		const web3 = new Web3(web3auth.provider);
-		const contract = new web3.eth.Contract(contractABI, contractAddress);
+
 		const accounts = await web3.eth.getAccounts();
 		console.log(`Using account: ${accounts[0]}`);
 		const tx = await contract.methods.createArticle(filecoinCID).send({ from: accounts[0] });
@@ -133,13 +121,12 @@ async function createArticle(filecoinCID) {
 
 async function evaluateArticle(articleId, approve, comment) {
 	await initPromise;
-	if (!web3auth.connected) {
+	if (!web3.connected) {
 		console.log("Please connect your wallet first");
 		return;
 	}
 	try {
-		const web3 = new Web3(web3auth.provider);
-		const contract = new web3.eth.Contract(contractABI, contractAddress);
+
 		const accounts = await web3.eth.getAccounts();
 		console.log(`Using account: ${accounts[0]}`);
 		const tx = await contract.methods.evaluateArticle(articleId, approve, comment).send({ from: accounts[0] });
@@ -151,13 +138,12 @@ async function evaluateArticle(articleId, approve, comment) {
 
 async function voteArticle(articleId, vote) {
 	await initPromise;
-	if (!web3auth.connected) {
+	if (!web3.connected) {
 		console.log("Please connect your wallet first");
 		return;
 	}
 	try {
-		const web3 = new Web3(web3auth.provider);
-		const contract = new web3.eth.Contract(contractABI, contractAddress);
+
 		const accounts = await web3.eth.getAccounts();
 		console.log(`Using account: ${accounts[0]}`);
 		const tx = await contract.methods.voteArticle(articleId, vote).send({ from: accounts[0] });
