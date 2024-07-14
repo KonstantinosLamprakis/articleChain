@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const port = process.env.PORT || 3000;
+const host = '0.0.0.0';
 
 require('dotenv').config();
 
@@ -14,6 +15,6 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use('/', routes);
 
-app.listen(port, () => {
+app.listen(port, host, () => {
   console.log(`Server started at: http://localhost:${port}`);
 });
