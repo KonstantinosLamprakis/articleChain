@@ -64,7 +64,7 @@ export async function voteArticle(articleId, vote) {
 	await initPromise;
 	if (!web3auth.connected) {
 		console.log("Please connect your wallet first");
-		return;
+		return false;
 	}
 	try {
 		const web3 = new Web3(web3auth.provider);
@@ -73,7 +73,9 @@ export async function voteArticle(articleId, vote) {
 		console.log(`Using account: ${accounts[0]}`);
 		const tx = await contract.methods.voteArticle(articleId, vote).send({ from: accounts[0] });
 		console.log("Article voted successfully:", tx);
+		return true;
 	} catch (error) {
 		console.error("Error voting on article:", error);
+		return false;
 	}
 }

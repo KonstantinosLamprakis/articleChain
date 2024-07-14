@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("yes");
         }
         else{
-            window.location.href = '/failure?data=' + encodeURIComponent('Evaluation failed.');
+            window.location.href = '/failure?data=' + encodeURIComponent('Evaluation failed. Make sure you are loged in, authorised journalist!');
             console.log("no");
         }
     });
