@@ -3,17 +3,27 @@ require('dotenv').config();
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const abi = require('./abi.json');
 
+// 2 SETUPS, both works
+
+// 1. SEPOLIA SETUP
 const provider = new HDWalletProvider({
 	mnemonic: {
 		phrase: process.env.MNEMONIC
 	},
 	providerOrUrl: process.env.INFURA_PROJECT_ID
 });
-
-const web3 = new Web3(provider);
-
 const contractAddress = process.env.CONTRACT_ADDRESS;
 
+// 2. POLYGON SETUP
+// const provider = new HDWalletProvider({
+// 	mnemonic: {
+// 		phrase: process.env.MNEMONIC
+// 	},
+// 	providerOrUrl: process.env.INFURA_PROJECT_ID_POLYGON
+// });
+// const contractAddress = process.env.CONTRACT_ADDRESS_POLYGON;
+
+const web3 = new Web3(provider);
 const contract = new web3.eth.Contract(abi, contractAddress);
 
 // READ FUNCS
