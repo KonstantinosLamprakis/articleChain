@@ -7,6 +7,10 @@
 	height: 300px;
 }
 
+h1, h2, h3, h4{
+    max-width: 700px;
+}
+
 .portfolio-block {
     padding-top: 3rem; /* Reduce top padding */
     padding-bottom: 1rem; /* Reduce bottom padding */
