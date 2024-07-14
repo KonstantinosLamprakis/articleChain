@@ -1,3 +1,4 @@
+import { isJournalist, getCredibility } from '../contract/read_data.js';
 import { web3auth, initPromise } from "./init.js";
 
 (async function fetchInfo() {
@@ -23,6 +24,15 @@ import { web3auth, initPromise } from "./init.js";
 				console.log("Profile image URL set to: ", user.profileImage);
 			} else {
 				console.log("Profile image not available.");
+			}
+			//journalist score
+			const journalistStatus = await isJournalist(address);
+			document.getElementById('journalist-status').textContent = journalistStatus ? "Yes" : "No";
+			if (journalistStatus){
+				document.getElementById('credibility-score').textContent = await getCredibility(address);
+			}
+			else{
+				document.getElementById('credibility-score').textContent = '0';
 			}
 		} else {
 			console.log("You are not connected yet.");

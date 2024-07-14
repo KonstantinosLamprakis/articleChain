@@ -1,5 +1,5 @@
 import { fetchAndRenderArticles } from "./article.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await fetchAndRenderArticles('indexArticle');
+    await fetchAndRenderArticles('reviewArticle');
 });

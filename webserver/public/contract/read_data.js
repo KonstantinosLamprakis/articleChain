@@ -68,4 +68,3 @@ export async function searchArticle(articleId) {
 		console.error("Error fetching article:", error);
 	}
 }
-
