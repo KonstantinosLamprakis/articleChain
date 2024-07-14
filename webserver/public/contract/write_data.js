@@ -44,7 +44,7 @@ export async function evaluateArticle(articleId, approve, comment) {
 	await initPromise;
 	if (!web3auth.connected) {
 		console.log("Please connect your wallet first");
-		return;
+		return false;
 	}
 	try {
 		const web3 = new Web3(web3auth.provider);
@@ -53,8 +53,10 @@ export async function evaluateArticle(articleId, approve, comment) {
 		console.log(`Using account: ${accounts[0]}`);
 		const tx = await contract.methods.evaluateArticle(articleId, approve, comment).send({ from: accounts[0] });
 		console.log("Article evaluated successfully:", tx);
+		return true;
 	} catch (error) {
 		console.error("Error evaluating article:", error);
+		return false;
 	}
 }
 

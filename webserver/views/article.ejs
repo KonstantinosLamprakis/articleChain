@@ -72,51 +72,11 @@
                 <label class="form-label" for="comments">Comments</label>
                 <textarea class="form-control" id="comments" name="comments" rows="4" required></textarea>
             </div>
+            <input type="hidden" id="article_id" name="article_id" value="<%= id %>">
             <div class="mb-3 mt-4">
                 <button class="btn btn-primary btn-lg d-block w-100" type="submit">Submit Verification</button>
             </div>
         </form>
     </div>
 </section>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const form = document.getElementById("journalist-verification");
-        const approveButton = document.getElementById("approve");
-        const rejectButton = document.getElementById("reject");
-        const approveLabel = document.querySelector("label[for='approve']");
-        const rejectLabel = document.querySelector("label[for='reject']");
-        
-        approveButton.addEventListener("change", function() {
-            if (approveButton.checked) {
-                approveLabel.classList.add("btn-success", "text-white");
-                approveLabel.classList.remove("btn-outline-success", "text-success");
-                rejectLabel.classList.add("btn-outline-danger", "text-danger");
-                rejectLabel.classList.remove("btn-danger", "text-white");
-            }
-        });
-
-        rejectButton.addEventListener("change", function() {
-            if (rejectButton.checked) {
-                rejectLabel.classList.add("btn-danger", "text-white");
-                rejectLabel.classList.remove("btn-outline-danger", "text-danger");
-                approveLabel.classList.add("btn-outline-success", "text-success");
-                approveLabel.classList.remove("btn-success", "text-white");
-            }
-        });
-
-        form.addEventListener("submit", function(event) {
-            const comments = document.getElementById("comments").value.trim();
-            if (!approveButton.checked && !rejectButton.checked) {
-                alert("Please select either Approve or Reject.");
-                event.preventDefault();
-                return;
-            }
-            if (comments === "") {
-                alert("Please enter your comments.");
-                event.preventDefault();
-                return;
-            }
-        });
-    });
-</script>
+<script type="module" src="/forms/article_review.js"></script>

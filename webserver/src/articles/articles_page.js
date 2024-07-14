@@ -3,7 +3,6 @@ const { getArticle } = require('../contract/contract');
 
 const pageArticle = async (req, res) => {
     const { id } = req.query;
-    console.log('Requested article id:', id);
     
     if (!id) {
         return res.status(400).send('Article ID is required');
@@ -27,7 +26,8 @@ const pageArticle = async (req, res) => {
 
         res.render('layout', {
             content: 'article',
-            article: articleWithContent
+            article: articleWithContent,
+            id: id
         });
     } catch (error) {
         console.error('Error fetching article:', error);
