@@ -9,7 +9,7 @@ async function aggregateJsonDataReview() {
     for (const article of articles) {
       const hash = article.filecoinCID;
       console.log('article:', article);
-      if (hash && article.isEvaluated == false) {
+      if (hash && article.isEvaluated == false && article.id != 1) {
         const data = await fetchJsonFromHash(hash);
         if (data) {
           const id = typeof article.id === 'bigint' ? article.id.toString() : article.id;
