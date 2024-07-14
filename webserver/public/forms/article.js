@@ -7,9 +7,9 @@ export async function fetchAndRenderArticles(url) {
             const { id, headline, image, short_text } = article;
     
             const articleElement = document.createElement('div');
-            articleElement.classList.add('col', 'mb-4');
+            articleElement.classList.add('d-flex', 'mb-4');
             articleElement.innerHTML = `
-                <div class="card border-0 col art-card">
+                <div class="card border-0 col card px-4 border-0 art-card">
                     <a href="/article?id=${id}" class="text-decoration-none text-dark">
                         <img class="card-img-top scale-on-hover" src="${image}" alt="${headline}">
                         <div class="card-body">
