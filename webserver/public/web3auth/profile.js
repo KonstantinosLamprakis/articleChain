@@ -28,8 +28,12 @@ import { web3auth, initPromise } from "./init.js";
 			//journalist score
 			const journalistStatus = await isJournalist(address);
 			document.getElementById('journalist-status').textContent = journalistStatus ? "Yes" : "No";
-			const credibility = await getCredibility(address);
-			document.getElementById('credibility-score').textContent = 'Credibility: ${credibility}';
+			if (journalistStatus){
+				document.getElementById('credibility-score').textContent = await getCredibility(address);
+			}
+			else{
+				document.getElementById('credibility-score').textContent = '0';
+			}
 		} else {
 			console.log("You are not connected yet.");
 		}

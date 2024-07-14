@@ -38,12 +38,13 @@ router.get('/about', (req, res) => {
 });
 
 router.get('/contact', (req, res) => {
-    res.render('layout', { content: 'contact_submit' });
+    res.render('layout', { content: 'contact_submit', title: "Contact us" });
 });
 
-router.get('/login', (req, res) => {
-    res.render('layout', { content: 'web3' });
+router.get('/apply', (req, res) => {
+    res.render('layout', { content: 'contact_submit', title: "Apply to be a journalist"});
 });
+
 
 router.get('/success', (req, res) => {
     res.render('layout', { content: 'success', message: req.query.data });
@@ -61,10 +62,6 @@ router.get('/profile', (req, res) => {
     res.render('layout', { content: 'profile' });
 });
 
-router.use((req, res, next) => {
-    res.render('layout', { content: '404' });
-  });
-
 router.post('/submit-article', upload.single('image'), submitArticle);
 
 router.get('/indexArticle', indexArticle);
@@ -75,4 +72,8 @@ router.get('/reviewArticle', reviewArticle);
 
 router.post('/contact-submit', upload.array('files'), submitContactForm);
 
+router.use((req, res, next) => {
+    res.render('layout', { content: '404' });
+  });
+  
 module.exports = router;
