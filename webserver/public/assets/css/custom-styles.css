@@ -21,3 +21,7 @@
 .thumbs-down.active {
   opacity: 1;
 }
+
+.art-card{
+	min-width: 250px;
+}
