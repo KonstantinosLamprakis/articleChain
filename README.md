@@ -23,11 +23,11 @@ The workflow of Verified News is as follows:
    - This ensures that journalists strive to be authentic and honest to maintain a good credibility score, which translates to better fame, public recognition, and a bigger audience reach.
    - The system ensures integrity and prevents bias, as any attempt to publish fake news by a few journalists can be countered by the larger community of reviewers.
   
-## Check out our Video overview here
-
+## ⬇️ Check out our Video overview here ⬇️
 <a href="https://www.youtube.com/watch?v=abc123">
   <img src="https://github.com/KonstantinosLamprakis/articleChain/blob/main/images/Screenshot%202024-07-14%20at%2007.00.13.png" alt="Watch the video" width="400"/>
 </a>
+
 
 ## Technologies Used
 
