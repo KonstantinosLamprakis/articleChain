@@ -1,4 +1,4 @@
-# Verified News
+# Verified News - Web3 Blockchain Dapp
 
 **Verified News** is a Web3 decentralized application (dApp) that aims to restore trust in news articles. By leveraging blockchain technology and a community of professional journalists, we ensure that the news published on our platform is authentic, unbiased, and credible.
 
