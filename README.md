@@ -24,7 +24,7 @@ The workflow of Verified News is as follows:
    - The system ensures integrity and prevents bias, as any attempt to publish fake news by a few journalists can be countered by the larger community of reviewers.
   
 ## ⬇️ Check out our Video overview here ⬇️
-<a href="https://youtu.be/m-7Zv7po8Fk">
+<a href="https://youtu.be/d7nL6nc42M8">
   <img src="https://github.com/KonstantinosLamprakis/articleChain/blob/main/images/Screenshot%202024-07-14%20at%2007.00.13.png" alt="Watch the video" width="400"/>
 </a>
 
